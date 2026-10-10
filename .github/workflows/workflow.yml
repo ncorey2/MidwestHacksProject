@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Start the app
-        run: docker compose up -d   # or however you start your app
+        run: docker compose up -d 
       - name: Wait for it
         run: npx wait-on http://localhost:3000
 
