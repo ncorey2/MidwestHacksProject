@@ -1,0 +1,62 @@
+[
+  {
+    "id": "finding-001",
+    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "severity": "MEDIUM",
+    "file": ".github/workflows/workflow.yml",
+    "line": 17,
+    "scanner": "Semgrep OSS",
+    "evidence": "- uses: actions/checkout@v4",
+    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+  },
+  {
+    "id": "finding-002",
+    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "severity": "MEDIUM",
+    "file": ".github/workflows/workflow.yml",
+    "line": 23,
+    "scanner": "Semgrep OSS",
+    "evidence": "- uses: actions/upload-artifact@v4",
+    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+  },
+  {
+    "id": "finding-003",
+    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "severity": "MEDIUM",
+    "file": ".github/workflows/workflow.yml",
+    "line": 34,
+    "scanner": "Semgrep OSS",
+    "evidence": "- uses: actions/checkout@v4",
+    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+  },
+  {
+    "id": "finding-004",
+    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "severity": "MEDIUM",
+    "file": ".github/workflows/workflow.yml",
+    "line": 37,
+    "scanner": "Semgrep OSS",
+    "evidence": "- uses: actions/upload-artifact@v4",
+    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+  },
+  {
+    "id": "finding-005",
+    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "severity": "MEDIUM",
+    "file": ".github/workflows/workflow.yml",
+    "line": 46,
+    "scanner": "Semgrep OSS",
+    "evidence": "- uses: actions/checkout@v4",
+    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+  },
+  {
+    "id": "finding-006",
+    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "severity": "MEDIUM",
+    "file": ".github/workflows/workflow.yml",
+    "line": 50,
+    "scanner": "Semgrep OSS",
+    "evidence": "- uses: actions/upload-artifact@v4",
+    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+  }
+]
