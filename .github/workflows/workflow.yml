@@ -1,0 +1,29 @@
+name: security-scan
+on:
+  pull_request:
+  schedule:
+    - cron: "0 3 ß* * *"
+
+jobs:
+  zap-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start the app
+        run: docker compose up -d   # or however you start your app
+      - name: Wait for it
+        run: npx wait-on http://localhost:3000
+
+      - name: ZAP baseline scan
+        run: |
+          docker run --network host -v "$(pwd)":/zap/wrk/:rw \
+            ghcr.io/zaproxy/zaproxy:stable \
+            zap-baseline.py -t http://localhost:3000 \
+            -c zap-rules.conf -r zap-report.html -J zap-report.json
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report
+          path: zap-report.*
