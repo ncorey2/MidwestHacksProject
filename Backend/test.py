@@ -9,7 +9,7 @@ import ollama
 BASE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(BASE, ".."))
 REPORTS = os.path.join(BASE, "..", "reports")
-MODEL = "qwen2.5-coder:3b"
+MODEL = "qwen2.5:7b"
 GROUP_BATCH = 3
 
 SEV_RANK = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
@@ -409,3 +409,4 @@ with open(out_path, "w", encoding="utf-8") as output_file:
     json.dump(output, output_file, indent=2)
 
 print(f"Wrote {out_path}")
+

@@ -1,18 +1,41 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import requests
+import os
+import sys
+import subprocess
 
 st.set_page_config (page_title= "AI Cybersecurity Risk Auditor", layout= "wide", initial_sidebar_state="expanded")
-    
+
+API_URL = "http://127.0.0.1:5001/api/results"
+
+try:
+    response = requests.get(API_URL, timeout=10)
+    response.raise_for_status()
+    findings = response.json()
+
+    if not isinstance(findings, list):
+        st.error("The API returned an unexpected data format.")
+        st.stop()
+
+except requests.RequestException as e:
+    st.error(f"Could not load security findings: {e}")
+    st.info("Make sure your Flask server is running on port 5001.")
+    st.stop()
+
+BACKEND_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "Backend")
+)
+SCANNER_SCRIPT = os.path.join(BACKEND_DIR, "test.py")
+
+
 if "scan_status" not in st.session_state:
     st.session_state.scan_status = "Not scanned"
 
 if "last_scan" not in st.session_state:
     st.session_state.last_scan = None
 
-
-## Demo Data Temporary
-findings = [{"id" : "sec-001", "title" : "unsafe shell execution", "severity" : "High", "file" : "src/commands.py", "line": "12", "scanner": "Bandit", "evidence" : "subprocess.call (True)" },]
    
 
 ## Sidebar
@@ -25,22 +48,57 @@ with st.sidebar:
     repository = st.text_input("Repository path", value= "", placeholder= "path/to/your/repository",)
 
     if st.button("▶ Scan repository", width="stretch"):
-        if repository.strip():
-            import time
-            st.session_state.scan_status = "Scanning demo data..."
-            with st.spinner("Simulating security scan..."):
-                time.sleep(1.5)
+        st.session_state.scan_status = "Scanning"
 
-            st.session_state.scan_status = "Demo scan complete"
-            st.session_state.last_scan = time.strftime(
-                "%Y-%m-%d %H:%M:%S"
+        try:
+            with st.spinner(
+                "Processing security reports and generating AI analysis..."
+            ):
+                result = subprocess.run(
+                    [sys.executable, SCANNER_SCRIPT],
+                    cwd=BACKEND_DIR,
+                    capture_output=True,
+                    text=True,
+                    timeout=900
+                )
+
+            if result.returncode != 0:
+                st.session_state.scan_status = "Scan failed"
+                st.error("The scanner pipeline failed.")
+
+                if result.stderr:
+                    st.code(result.stderr[-5000:])
+
+            else:
+                # Fetch the newly generated findings from Flask
+                response = requests.get(API_URL, timeout=10)
+                response.raise_for_status()
+                findings = response.json()
+
+                st.session_state.scan_status = "Complete"
+
+                import time
+                st.session_state.last_scan = time.strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
+
+                st.success(
+                    f"Pipeline complete! Loaded {len(findings)} findings."
+                )
+
+                with st.expander("View pipeline logs"):
+                    st.text(result.stdout[-10000:] or "No output.")
+
+        except subprocess.TimeoutExpired:
+            st.session_state.scan_status = "Timed out"
+            st.error(
+                "The pipeline exceeded 15 minutes. "
+                "Check the backend terminal and Ollama."
             )
 
-            st.success(
-                "Demo scan complete! No real repository scan was performed."
-            )
-        else:
-            st.warning("Enter a repository path first.")
+        except (requests.RequestException, ValueError) as e:
+            st.session_state.scan_status = "Error"
+            st.error(f"Could not reload findings: {e}")
 
 
     st.divider()
@@ -56,7 +114,7 @@ with st.sidebar:
 ## Main Header Bar
 st.title("Security Overview")
 st.write( "Monitor vulnerabilities, understand risk, analysize risks and prioritze remediation across codebase.")
-st.caption("DEMO DATA")
+st.caption("Live findings from local analysis pipeline")
 
 ## Summary Card
 
@@ -233,11 +291,17 @@ elif page == "Security Findings" :
 
             st.divider()
 
-            st.write("**AI Explanation — Sample**")
-            st.info(
-                "This finding may indicate a security risk. "
-                "Review the scanner evidence and the surrounding code "
-                "before determining its actual impact."
+            st.write("**AI Risk Analysis**")
+            st.write(
+                selected.get(
+                "reasoning",
+                "No AI reasoning is available for this finding."
+            )
+        )
+
+            if selected.get("occurrences") is not None:
+                st.write(
+                f"**Occurrences:** {selected['occurrences']}"
             )
 
             st.write("**Suggested Next Step — Sample Guidance**")
@@ -283,5 +347,4 @@ elif page == "Scan History":
 st.divider()
 st.caption(
     "AI Cybersecurity Risk Auditor · Prototype · "
-    "Scanner and AI results are not connected yet"
 )
