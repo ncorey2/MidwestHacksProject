@@ -1,0 +1,14 @@
+# Python virtual environments
+.venv/
+venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Local secrets
+.env
+.streamlit/secrets.toml
+
+# Editor settings
+.DS_Store
