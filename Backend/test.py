@@ -90,7 +90,7 @@ def add_ai_titles(findings):
                 if title and 0 <= item["id"] < len(findings):
                     findings[item["id"]]["title"] = title[:80]
                 if reasoning:
-                    findings[idx]["reasoning"] = reasoning[:400]
+                    findings[item["id"]]["reasoning"] = reasoning[:400]
         except Exception as e:
             print(f"Batch starting at {i} failed ({e}); kept scanner titles")
         print(f"Titled {min(i + BATCH, len(findings))}/{len(findings)}")
