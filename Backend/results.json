@@ -1,62 +1,68 @@
 [
   {
     "id": "finding-001",
-    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "title": "Mutable GitHub Actions tags in workflow.yml",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
     "line": 17,
     "scanner": "Semgrep OSS",
     "evidence": "- uses: actions/checkout@v4",
-    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+    "reasoning": "The evidence shows the use of the `actions/checkout@v4` action, which is mutable and can be modified by the user. This could potentially lead to unauthorized access or modification of the repository, making it a real risk.",
+    "occurrences": 6
   },
   {
     "id": "finding-002",
-    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "title": "Mutable GitHub Actions tags in workflow.yml",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
     "line": 23,
     "scanner": "Semgrep OSS",
     "evidence": "- uses: actions/upload-artifact@v4",
-    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+    "reasoning": "The evidence shows the use of the `actions/upload-artifact@v4` action, which is a mutable GitHub Actions tag. This action is not recommended for use in production workflows due to potential security risks associated with mutable tags. Therefore, this is a real risk.",
+    "occurrences": 6
   },
   {
     "id": "finding-003",
-    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "title": "Mutable GitHub Actions tags in workflow.yml",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
     "line": 34,
     "scanner": "Semgrep OSS",
     "evidence": "- uses: actions/checkout@v4",
-    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+    "reasoning": "The evidence shows the use of the `actions/checkout@v4` action, which is mutable and can be modified by the user. This could potentially lead to unauthorized access or modification of the repository, making it a real risk.",
+    "occurrences": 6
   },
   {
     "id": "finding-004",
-    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "title": "Mutable GitHub Actions tags in workflow.yml",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
     "line": 37,
     "scanner": "Semgrep OSS",
     "evidence": "- uses: actions/upload-artifact@v4",
-    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+    "reasoning": "The evidence shows the use of the `actions/upload-artifact@v4` action, which is a mutable GitHub Actions tag. This action is not recommended for use in production workflows due to potential security risks associated with mutable tags. Therefore, this is a real risk.",
+    "occurrences": 6
   },
   {
     "id": "finding-005",
-    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "title": "Mutable GitHub Actions tags in workflow.yml",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
     "line": 46,
     "scanner": "Semgrep OSS",
     "evidence": "- uses: actions/checkout@v4",
-    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+    "reasoning": "The evidence shows the use of the `actions/checkout@v4` action, which is mutable and can be modified by the user. This could potentially lead to unauthorized access or modification of the repository, making it a real risk.",
+    "occurrences": 6
   },
   {
     "id": "finding-006",
-    "title": "Semgrep Finding: yaml.github-actions.security.github-actions-mutable-action-tag.github-actions-mutable-action-tag",
+    "title": "Mutable GitHub Actions tags in workflow.yml",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
     "line": 50,
     "scanner": "Semgrep OSS",
     "evidence": "- uses: actions/upload-artifact@v4",
-    "reasoning": "GitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-gi"
+    "reasoning": "The evidence shows the use of the `actions/upload-artifact@v4` action, which is a mutable GitHub Actions tag. This action is not recommended for use in workflows as it can lead to security vulnerabilities and unexpected behavior. The use of mutable tags can expose sensitive information and allow unauthorized actions to be performed.",
+    "occurrences": 6
   }
 ]
