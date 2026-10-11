@@ -140,6 +140,7 @@ with st.sidebar:
                     st.code(result.stderr[-5000:])
 
             else:
+                
                 # Fetch the newly generated findings from Flask
                 response = requests.get(API_URL, timeout=10)
                 response.raise_for_status()

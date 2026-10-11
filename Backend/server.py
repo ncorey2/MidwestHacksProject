@@ -1,24 +1,28 @@
+
 from flask import Flask, jsonify
-from flask_cors import CORS
-import os
+from pathlib import Path
 import json
 
 app = Flask(__name__)
-CORS(app)
 
-BASE = os.path.dirname(os.path.abspath(__file__))
-RESULTS_FILE = os.path.abspath(
-    os.path.join(BASE, "results.json")
-)
-@app.route("/api/results", methods=["GET"])
-def get_findings():
-    if not os.path.exists(RESULTS_FILE):
-       return jsonify({"error": "results.json not found"}), 404
+RESULTS_PATH = Path(__file__).resolve().parent / "results.json"
 
-    with open(RESULTS_FILE, "r", encoding="utf-8") as f:
-        data = json.load(f)
 
-    return jsonify(data)
+@app.get("/api/results")
+def get_results():
+    try:
+        # Read the latest file each time this endpoint is requested
+        with open(RESULTS_PATH, "r", encoding="utf-8") as file:
+            results = json.load(file)
+
+        return jsonify(results)
+
+    except FileNotFoundError:
+        return jsonify({"error": "results.json not found"}), 404
+
+    except json.JSONDecodeError:
+        return jsonify({"error": "Results are being updated. Try again."}), 503
+
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5001, debug=True)
+    app.run(debug=True)
