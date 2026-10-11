@@ -308,9 +308,9 @@
     "solution": ""
   },
   {
-    "id": "finding-023",
-    "title": "Pillow Denial of Service via PCF Font",
-    "severity": "HIGH",
+    "id": "finding-012",
+    "title": "Pillow PCF Font Denial of Service",
+    "severity": "ERROR",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "trivy",

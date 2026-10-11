@@ -375,8 +375,10 @@ def add_ai_titles(findings):
                 '{"reasoning": "2 sentences explaining the risk and what could go wrong.", '
                 '"owasp_category": "e.g. A03 - Injection", '
                 '"nist_control": "e.g. PR.DS-1 Data-at-rest is protected", '
-                '"solution": "3-5 concrete steps a developer should take to fix this specific issue."}'
-         ),
+                '"solution": "3-5 concrete steps a developer should take to fix this specific issue."'
+                '"remediation_code": "The actual fixed code snippet replacing the vulnerable code. '
+                'If no code fix is applicable, return an empty string."}'
+            ),
             "instructions": [
                 "Base solution on the actual evidence shown, not generic advice.",
                 "Reference the specific file, line, package or CVE where possible.",
@@ -414,6 +416,8 @@ def add_ai_titles(findings):
             finding["owasp_category"] = safe_str(result.get("owasp_category"))
             finding["nist_control"] = safe_str(result.get("nist_control"))
             finding["solution"] = safe_str(result.get("solution"))
+            finding["remediation_code"] = safe_str(result.get("remediation_code"))
+            finding["remediation_status"] = "pending_review"
 
         except Exception as e:
             print(f"Reasoning generation failed: {e}")
@@ -471,6 +475,8 @@ for n, finding in enumerate(findings, start=1):
         "owasp_category": finding.get("owasp_category", ""),
         "nist_control": finding.get("nist_control", ""),
         "solution": finding.get("solution", ""),
+        "remediation_code": finding.get("remediation_code", ""),
+        "remediation_status": "pending_review",
     })
 
 out_path = os.path.join(BASE, "results.json")
