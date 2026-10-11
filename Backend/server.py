@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify
 from pathlib import Path
 import json
