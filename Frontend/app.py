@@ -141,7 +141,7 @@ with st.sidebar:
             st.error("GITHUB_TOKEN not found in .env")
         else:
             with st.spinner("Triggering GitHub Actions scan..."):
-                trigger_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/.yml/dispatches"
+                trigger_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/workflow.yml/dispatches"
                 trigger_response = requests.post(
                     trigger_url,
                     headers={
