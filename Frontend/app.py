@@ -97,6 +97,28 @@ if "scan_status" not in st.session_state:
 if "last_scan" not in st.session_state:
     st.session_state.last_scan = None
 
+def load_review_decisions():
+    review_file = os.path.join(BACKEND_DIR, "review_decisions.json")
+    if not os.path.exists(review_file):
+        return {}
+    try:
+        with open(review_file, "r") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+def save_review_decision(finding_id, status, reviewer_note=""):
+    review_file = os.path.join(BACKEND_DIR, "review_decisions.json")
+    decisions = load_review_decisions()
+    decisions[finding_id] = {
+        "status": status,  # "approved" or "rejected"
+        "reviewer_note": reviewer_note,
+        "reviewed_at": datetime.now().isoformat(timespec="seconds"),
+    }
+    with open(review_file, "w") as f:
+        json.dump(decisions, f, indent=2)
+
+
 
 # ── SIDEBAR ──────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -119,7 +141,7 @@ with st.sidebar:
             st.error("GITHUB_TOKEN not found in .env")
         else:
             with st.spinner("Triggering GitHub Actions scan..."):
-                trigger_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/workflow.yml/dispatches"
+                trigger_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/.yml/dispatches"
                 trigger_response = requests.post(
                     trigger_url,
                     headers={
@@ -331,7 +353,18 @@ if page == "Overview":
     )
     fig.update_traces(textposition="outside")
     st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+    
+    decisions = load_review_decisions()
+    approved = sum(1 for d in decisions.values() if d["status"] == "approved")
+    rejected = sum(1 for d in decisions.values() if d["status"] == "rejected")
+    pending = sum(1 for d in decisions.values() if d["status"] == "pending_review")
 
+    st.subheader("Remediation Pipeline")
+    r1, r2, r3 = st.columns(3)
+    r1.metric("⏳ Pending Review", pending)
+    r2.metric("✅ Approved", approved)
+    r3.metric("❌ Rejected", rejected)
+    st.divider()
 
 elif page == "Security Findings":
     st.subheader("All security findings")
@@ -411,6 +444,59 @@ elif page == "Security Findings":
             if selected.get("solution"):
                 st.write("**Recommended Solution**")
                 st.success(selected["solution"])
+
+            if selected.get("remediation_code"):
+                st.divider()
+                st.write("**🔧 AI-Generated Remediation Code**")
+
+                # Load current review status
+                decisions = load_review_decisions()
+                decision = decisions.get(selected["id"], {})
+                status = decision.get("status", "pending_review")
+
+                # Show status badge
+                if status == "approved":
+                    st.success("✅ Approved — ready to apply")
+                elif status == "rejected":
+                    st.error("❌ Rejected — needs revision")
+                else:
+                    st.warning("⏳ Pending human review")
+
+                # Show the code
+                st.code(selected["remediation_code"], language="python")
+
+                # Review controls — only show if not yet decided
+                if status == "pending_review":
+                    st.write("**Review this remediation:**")
+                    reviewer_note = st.text_area(
+                        "Reviewer note (optional)",
+                        placeholder="Add a note about this remediation...",
+                        key=f"note_{selected['id']}"
+                    )
+
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if st.button("✅ Approve", key=f"approve_{selected['id']}", type="primary"):
+                            save_review_decision(selected["id"], "approved", reviewer_note)
+                            st.success("Remediation approved!")
+                            st.rerun()
+                    with col2:
+                        if st.button("❌ Reject", key=f"reject_{selected['id']}"):
+                            save_review_decision(selected["id"], "rejected", reviewer_note)
+                            st.error("Remediation rejected.")
+                            st.rerun()
+
+                    # Allow re-review if already decided
+                else:
+                    reviewer_note = decision.get("reviewer_note", "")
+                    if reviewer_note:
+                        st.caption(f"Reviewer note: {reviewer_note}")
+                    st.caption(f"Reviewed at: {decision.get('reviewed_at', '—')}")
+
+                    if st.button("↩️ Reset review", key=f"reset_{selected['id']}"):
+                        save_review_decision(selected["id"], "pending_review")
+                        st.rerun()
+            
 
             if selected.get("occurrences") is not None:
                 st.write(f"**Occurrences:** {selected['occurrences']}")
