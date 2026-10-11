@@ -7,11 +7,11 @@
     "line": 28,
     "scanner": "Bandit",
     "evidence": "27 if __name__ == \"__main__\":\n28     app.run(debug=True, port=5001)\n",
-    "reasoning": "Enabling debug mode in a Flask application exposes the Werkzeug debugger, which allows remote code execution if the application is accessible over a network. This creates a critical vulnerability where an attacker can execute arbitrary Python code on the server by triggering an exception.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A05:2021 - Security Misconfiguration",
-    "nist_control": "PR.AC-03 Access to local and remote systems is limited to only authorized users",
-    "solution": "1. Remove the `debug=True` argument from the `app.run()` call in `Backend/server.py` at line 28. 2. Ensure the application is run behind a production-grade WSGI server (like Gunicorn or uWSGI) instead of the built-in development server. 3. Add a configuration check to prevent debug mode from being enabled in production environments, such as using an environment variable `FLASK_ENV=production`."
+    "nist_control": "PR.PS-01 Configuration management practices",
+    "solution": ""
   },
   {
     "id": "finding-002",
@@ -21,11 +21,11 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-25990\nSeverity: HIGH\nFixed Version: 12.1.1\nLink: [CVE-2026-25990](https://avd.aquasec.com/nvd/cve-2026-25990)\nsecurity-severity: 8.0\npillow: Pillow: Out-of-bounds Write via Specially Crafted PSD Image\nPillow is a Python imaging library. From 10.3.0 to before 12.1.1, an out-of-bounds write may be triggered when loading a specially crafted PSD image. This vulnerability is fixed in 12.1.1.\nVulnerability CVE-2026-25990\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.1.1\nLink: [CVE-2026-25990](https://avd.aquasec.com/nvd/cve-2026-25990)\nPillow is a Python imaging library. From 10.3.0 to before 12.1.1, an out-of-bounds write may be triggered when loading a specially crafted PSD image. This vulnerability is fixed in 12.1.1.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to an out-of-bounds write when processing specially crafted PSD images, which could lead to memory corruption, application crashes, or potential remote code execution. This risk is elevated because the library is likely used to process user-uploaded or external image files, allowing an attacker to trigger the vulnerability by submitting a malicious PSD file.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` package in `requirements.txt` (line 19) from version 11.3.0 to at least 12.1.1 to include the fix for CVE-2026-25990. 2. Re-run the dependency installation process (e.g., `pip install -r requirements.txt`) to apply the update in the target environment. 3. Implement input validation to reject or sanitize PSD files from untrusted sources before they are passed to Pillow, reducing the attack surface even if other vulnerabilities exist."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-003",
@@ -35,25 +35,25 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-40192\nSeverity: HIGH\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)\nsecurity-severity: 7.5\nPillow: Pillow: Denial of Service via decompression bomb in FITS image processing\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround.\nVulnerability CVE-2026-40192\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to a decompression bomb attack via FITS image processing, which can lead to unbounded memory consumption and denial of service. An attacker could upload a malicious FITS file to crash the application or degrade performance significantly.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04: The organization's software, firmware, and information are protected from or guarded against malicious code and unintended information modification and/or destruction.",
-    "solution": "1. Update the `pillow` package in `requirements.txt` from version 11.3.0 to 12.2.0 or later to include the fix for CVE-2026-40192. 2. If an immediate upgrade is not possible, configure the application to reject or exclude FITS image formats from processing to mitigate the risk. 3. Implement resource limits (e.g., memory caps) on the image processing service to prevent OOM crashes in case other vulnerabilities are exploited."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-004",
-    "title": "Pillow PSD File Processing Code Execution",
+    "title": "Pillow PSD File Processing RCE",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42311\nSeverity: HIGH\nFixed Version: 12.2.0\nLink: [CVE-2026-42311](https://avd.aquasec.com/nvd/cve-2026-42311)\nsecurity-severity: 8.0\nPillow: python-pillow: Pillow: Arbitrary code execution via malicious PSD file processing\nPillow is a Python imaging library. From version 10.3.0 to before version 12.2.0, processing a malicious PSD file could lead to memory corruption, potentially resulting in a crash or arbitrary code execution. This issue has been patched in version 12.2.0.\nVulnerability CVE-2026-42311\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42311](https://avd.aquasec.com/nvd/cve-2026-42311)\nPillow is a Python imaging library. From version 10.3.0 to before version 12.2.0, processing a malicious PSD file could lead to memory corruption, potentially resulting in a crash or arbitrary code execution. This issue has been patched in version 12.2.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-42311, where processing a malicious PSD file can cause memory corruption leading to arbitrary code execution. This allows an attacker to upload a crafted PSD file to the application, potentially gaining full control of the server process.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` package in `requirements.txt` (line 19) from version 11.3.0 to at least 12.2.0 to include the security patch for CVE-2026-42311. 2. Re-run the dependency installation process (e.g., `pip install -r requirements.txt`) to apply the update in the target environment. 3. Implement input validation to reject or sanitize PSD files from untrusted sources before they are processed by the application, reducing the attack surface even if the library is updated."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-005",
@@ -63,11 +63,11 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54058\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54058](https://avd.aquasec.com/nvd/cve-2026-54058)\nsecurity-severity: 8.0\nPillow: Pillow: Memory disclosure or denial of service via crafted McIdas AREA image\nPillow is a Python imaging library. Prior to 12.3.0, when Pillow loads an uncompressed McIdas AREA image from a filename through the mmap raw codec path, attacker-controlled header words can set a row stride smaller than the natural row width, causing pixel access such as Image.tobytes(), getpixel, convert, or save to read beyond the mapped region and disclose adjacent process memory or fault. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-54058\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54058](https://avd.aquasec.com/nvd/cve-2026-54058)\nPillow is a Python imaging library. Prior to 12.3.0, when Pillow loads an uncompressed McIdas AREA image from a filename through the mmap raw codec path, attacker-controlled header words can set a row stride smaller than the natural row width, causing pixel access such as Image.tobytes(), getpixel, convert, or save to read beyond the mapped region and disclose adjacent process memory or fault. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-54058, which allows an attacker to craft a malicious McIdas AREA image that causes the application to read beyond the mapped memory region. This can lead to the disclosure of sensitive adjacent process memory or a denial of service via a crash when the image is processed.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` package in `requirements.txt` (line 19) from version 11.3.0 to at least 12.3.0 to include the fix for CVE-2026-54058. 2. Re-run the dependency installation process (e.g., `pip install -r requirements.txt`) to apply the update in the target environment. 3. Verify the fix by re-scanning with Trivy or checking the installed version via `pip show pillow` to ensure it is 12.3.0 or higher."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-006",
@@ -77,11 +77,11 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54059\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)\nsecurity-severity: 7.5\npython-pillow: Pillow: Denial of Service via crafted PCF font data\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-54059\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to a Denial of Service attack where crafted PCF font data can trigger excessive memory allocation because the _load_bitmaps() function fails to validate image dimensions before allocation. An attacker could exploit this by serving a malicious font file to crash the application or exhaust system resources.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to include the fix for CVE-2026-54059. 2. Run pip install --upgrade pillow to apply the update in the development and production environments. 3. Re-run the Trivy scan to verify that the vulnerability is resolved and no new issues have been introduced."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-007",
@@ -91,11 +91,11 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54060\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54060](https://avd.aquasec.com/nvd/cve-2026-54060)\nsecurity-severity: 7.5\npython-pillow: Pillow: Denial of Service via excessive memory allocation when processing font files\nPillow is a Python imaging library. Prior to 12.3.0, PIL/FontFile.py FontFile.compile() assembled per-glyph images into a combined bitmap with Image.new(\"1\", (xsize, ysize)) without calling Image._decompression_bomb_check(), allowing a font to trigger excessive allocation during conversion or saving. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-54060\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54060](https://avd.aquasec.com/nvd/cve-2026-54060)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/FontFile.py FontFile.compile() assembled per-glyph images into a combined bitmap with Image.new(\"1\", (xsize, ysize)) without calling Image._decompression_bomb_check(), allowing a font to trigger excessive allocation during conversion or saving. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to a denial-of-service attack where a malicious font file can trigger excessive memory allocation during processing. This could crash the application or exhaust system resources if untrusted font files are processed.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later. 2. Run pip install --upgrade pillow to apply the fix in the development environment. 3. Re-run the Trivy scan to confirm the vulnerability is resolved."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-008",
@@ -105,11 +105,11 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-55379\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-55379](https://avd.aquasec.com/nvd/cve-2026-55379)\nsecurity-severity: 7.5\npython-pillow: Pillow: Denial of Service via crafted BDF font file\nPillow is a Python imaging library. Prior to 12.3.0, PIL/BdfFontFile.py bdf_char() read the BBX width and height field from a BDF font file and passed attacker-controlled dimensions to Image.new() without calling Image._decompression_bomb_check(), bypassing Pillow's documented decompression bomb protection and allowing excessive memory allocation. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-55379\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-55379](https://avd.aquasec.com/nvd/cve-2026-55379)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/BdfFontFile.py bdf_char() read the BBX width and height field from a BDF font file and passed attacker-controlled dimensions to Image.new() without calling Image._decompression_bomb_check(), bypassing Pillow's documented decompression bomb protection and allowing excessive memory allocation. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to a Denial of Service attack where a crafted BDF font file can trigger excessive memory allocation by bypassing decompression bomb checks. This allows an attacker to crash the application or exhaust system resources by uploading a malicious font file.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to include the fix for CVE-2026-55379. 2. Run pip install --upgrade pillow to apply the update in the development and production environments. 3. Re-run the Trivy scan to verify that the vulnerability is resolved and no new issues have been introduced."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-009",
@@ -119,11 +119,11 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-55380\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-55380](https://avd.aquasec.com/nvd/cve-2026-55380)\nsecurity-severity: 7.5\npython-pillow: Pillow: Denial of Service via crafted GD 2.x image file\nPillow is a Python imaging library. Prior to 12.3.0, PIL/GdImageFile.py GdImageFile._open() read image dimensions from the GD 2.x header and stored them in self._size without calling Image._decompression_bomb_check(), allowing a crafted .gd file to trigger excessive C-heap allocation when loaded. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-55380\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-55380](https://avd.aquasec.com/nvd/cve-2026-55380)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/GdImageFile.py GdImageFile._open() read image dimensions from the GD 2.x header and stored them in self._size without calling Image._decompression_bomb_check(), allowing a crafted .gd file to trigger excessive C-heap allocation when loaded. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-55380, where a crafted GD 2.x image can trigger excessive C-heap allocation because the decompression bomb check is bypassed during the opening process. This allows an attacker to cause a Denial of Service by uploading a malicious .gd file, leading to application crash or resource exhaustion.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to include the fix for CVE-2026-55380. 2. Re-run the dependency installation process (e.g., pip install -r requirements.txt) to apply the update in the environment. 3. Verify the fix by scanning the updated environment with Trivy to confirm the vulnerability is resolved."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-010",
@@ -133,11 +133,11 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59197\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59197](https://avd.aquasec.com/nvd/cve-2026-59197)\nsecurity-severity: 8.2\nPillow: Pillow: Native heap out-of-bounds write\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's public rank-filter API can trigger a native heap out-of-bounds write when given a very large odd filter size because ImageFilter.RankFilter.filter() calls image.expand(size // 2, size // 2) before rank-filter size validation and ImagingExpand() computes output dimensions with unchecked signed int arithmetic. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59197\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59197](https://avd.aquasec.com/nvd/cve-2026-59197)\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's public rank-filter API can trigger a native heap out-of-bounds write when given a very large odd filter size because ImageFilter.RankFilter.filter() calls image.expand(size // 2, size // 2) before rank-filter size validation and ImagingExpand() computes output dimensions with unchecked signed int arithmetic. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to a native heap out-of-bounds write in the RankFilter API, which can be triggered by passing a very large odd filter size. This memory corruption vulnerability could allow an attacker to execute arbitrary code or cause a denial of service if the application processes untrusted image data or filter parameters.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to include the fix for CVE-2026-59197. 2. Run pip install --upgrade pillow to apply the update in the development and production environments. 3. Implement input validation to ensure that any filter sizes passed to ImageFilter.RankFilter are within safe, expected bounds to prevent triggering the vulnerability even if an older version is temporarily present."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-011",
@@ -147,123 +147,123 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59199\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59199](https://avd.aquasec.com/nvd/cve-2026-59199)\nsecurity-severity: 7.5\nPillow: Pillow: Denial of Service via out-of-bounds write in image processing\nPillow is a Python imaging library. Prior to 12.3.0, Pillow public image coordinate APIs can trigger a native heap out-of-bounds write when given coordinates near the signed 32-bit integer limits in Image.paste(), Image.crop(), or Image.alpha_composite(). This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59199\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59199](https://avd.aquasec.com/nvd/cve-2026-59199)\nPillow is a Python imaging library. Prior to 12.3.0, Pillow public image coordinate APIs can trigger a native heap out-of-bounds write when given coordinates near the signed 32-bit integer limits in Image.paste(), Image.crop(), or Image.alpha_composite(). This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to a native heap out-of-bounds write when processing image coordinates near signed 32-bit integer limits, which can lead to a Denial of Service. An attacker could exploit this by submitting crafted image data to any endpoint that uses Image.paste(), Image.crop(), or Image.alpha_composite() with malicious coordinates.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to include the fix for CVE-2026-59199. 2. Implement input validation to ensure that any coordinates passed to Image.paste(), Image.crop(), or Image.alpha_composite() are within safe bounds and not near the signed 32-bit integer limits. 3. Run a dependency scan (e.g., using Trivy or pip-audit) after the update to confirm the vulnerability is resolved and no other outdated components remain."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-012",
-    "title": "Pillow Denial of Service via PDF",
+    "title": "Pillow: Pillow: Denial of service via crafted PDF stream",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59200\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59200](https://avd.aquasec.com/nvd/cve-2026-59200)\nsecurity-severity: 7.5\nPillow: Pillow: Denial of service via crafted PDF stream\nPillow is a Python imaging library. From 5.1.0 until 12.3.0, PdfParser.PdfStream.decode() in PIL/PdfParser.py calls zlib.decompress() with bufsize set to the PDF stream Length field without bounding the decompressed output size, allowing a crafted FlateDecode PDF stream to exhaust memory from a small file. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59200\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59200](https://avd.aquasec.com/nvd/cve-2026-59200)\nPillow is a Python imaging library. From 5.1.0 until 12.3.0, PdfParser.PdfStream.decode() in PIL/PdfParser.py calls zlib.decompress() with bufsize set to the PDF stream Length field without bounding the decompressed output size, allowing a crafted FlateDecode PDF stream to exhaust memory from a small file. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-59200, where a crafted PDF can trigger unbounded memory allocation during decompression, leading to a Denial of Service. An attacker could upload a small, malicious PDF file to crash the application or exhaust server resources.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` package in `requirements.txt` (line 19) from version 11.3.0 to at least 12.3.0. 2. Run `pip install --upgrade pillow` or `poetry update pillow` to apply the fix in the local environment. 3. Re-run the Trivy scan to confirm that CVE-2026-59200 is no longer reported for the `pillow` package."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-013",
-    "title": "Pillow JPEG2000 Denial of Service",
+    "title": "Pillow: Pillow: Denial of Service via crafted JPEG2000 image",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59204\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59204](https://avd.aquasec.com/nvd/cve-2026-59204)\nsecurity-severity: 8.0\nPillow: Pillow: Denial of Service via crafted JPEG2000 image\nPillow is a Python imaging library. From 8.2.0 through 12.2.0, src/libImaging/Jpeg2KDecode.c accumulates total_component_width across every tile in a JPEG2000 image instead of recomputing it per tile, allowing a crafted tiled JPEG2000 file to force substantially higher transient memory usage and trigger out-of-memory failures during decoding. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59204\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59204](https://avd.aquasec.com/nvd/cve-2026-59204)\nPillow is a Python imaging library. From 8.2.0 through 12.2.0, src/libImaging/Jpeg2KDecode.c accumulates total_component_width across every tile in a JPEG2000 image instead of recomputing it per tile, allowing a crafted tiled JPEG2000 file to force substantially higher transient memory usage and trigger out-of-memory failures during decoding. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-59204, where a flaw in Jpeg2KDecode.c causes excessive memory accumulation when processing crafted tiled JPEG2000 images. This allows an attacker to trigger an out-of-memory condition, leading to a Denial of Service for any application processing untrusted image files.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to include the fix for CVE-2026-59204. 2. Run pip install --upgrade pillow to apply the update in the development and production environments. 3. Re-run the Trivy scan to verify that the vulnerability is resolved and no new issues have been introduced."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-014",
-    "title": "Pillow Heap Corruption via ImageCms",
+    "title": "Pillow: Pillow: Controlled native heap corruption in ImageCms.ImageCmsTransform.",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59205\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59205](https://avd.aquasec.com/nvd/cve-2026-59205)\nsecurity-severity: 7.5\nPillow: Pillow: Controlled native heap corruption in ImageCms.ImageCmsTransform.apply API\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's ImageCms.ImageCmsTransform.apply(im, imOut) API can trigger controlled native heap corruption when the caller supplies an output image whose mode does not match the transform's declared output mode. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59205\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59205](https://avd.aquasec.com/nvd/cve-2026-59205)\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's ImageCms.ImageCmsTransform.apply(im, imOut) API can trigger controlled native heap corruption when the caller supplies an output image whose mode does not match the transform's declared output mode. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-59205, which allows controlled native heap corruption in the ImageCms module if an output image with a mismatched mode is supplied. This memory corruption could lead to application crashes or potential arbitrary code execution if an attacker can influence the image processing parameters.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to include the fix for CVE-2026-59205. 2. Review code using ImageCms.ImageCmsTransform.apply to ensure the output image mode matches the transform's declared output mode, adding validation if necessary. 3. Re-run the Trivy scan to confirm the vulnerability is resolved and no new issues are introduced by the upgrade."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-015",
-    "title": "pyarrow Use After Free DoS",
+    "title": "apache-arrow: Apache Arrow C++: Denial of Service via Use After Free vulnerabili",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 21,
     "scanner": "Trivy",
     "evidence": "Package: pyarrow\nInstalled Version: 21.0.0\nVulnerability CVE-2026-25087\nSeverity: HIGH\nFixed Version: 23.0.1\nLink: [CVE-2026-25087](https://avd.aquasec.com/nvd/cve-2026-25087)\nsecurity-severity: 7.0\napache-arrow: Apache Arrow C++: Denial of Service via Use After Free vulnerability when reading IPC files\nUse After Free vulnerability in Apache Arrow C++.\n\nThis issue affects Apache Arrow C++ from 15.0.0 through 23.0.0. It can be triggered when reading an Arrow IPC file (but not an IPC stream) with pre-buffering enabled, if the IPC file contains data with variadic buffers (such as Binary View and String View data). Depending on the number of variadic buffers in a record batch column and on the temporal sequence of multi-threaded IO, a write to a dangling pointer could occur. The value (a `std::shared_ptr<Buffer>` object)\u00a0that is written to the dangling pointer is not under direct control of the attacker.\n\nPre-buffering is disabled by default but can be enabled using a specific C++ API call (`RecordBatchFileReader::PreBufferMetadata`). The functionality is not exposed in language bindings (Python, Ruby, C GLib), so these bindings are not vulnerable.\n\nThe most likely consequence of this issue would be random crashes or memory corruption when reading specific kinds of IPC files. If the application allows ingesting IPC files from untrusted sources, this could plausibly be exploited for denial of service. Inducing more targeted kinds of misbehavior (such as confidential data extractio",
-    "reasoning": "The installed pyarrow version 21.0.0 is vulnerable to a Use After Free flaw in the underlying Apache Arrow C++ library, which can cause denial of service if the application reads untrusted Arrow IPC files with pre-buffering enabled. Although the Python bindings do not expose the vulnerable API by default, upgrading is necessary to eliminate the risk of memory corruption and crashes associated with processing specific data structures.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pyarrow` package in `requirements.txt` (line 21) from version 21.0.0 to at least 23.0.1 to include the security patch for CVE-2026-25087. 2. Verify that the application does not use any custom C++ extensions or direct bindings that explicitly enable `RecordBatchFileReader::PreBufferMetadata`, as this is the specific trigger for the vulnerability. 3. Implement input validation to reject or sanitize Arrow IPC files from untrusted sources before processing, reducing the attack surface for potential DoS exploits."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-016",
-    "title": "urllib3 Cross-Origin Redirect Header Leak",
+    "title": "urllib3: urllib3: Information disclosure via cross-origin redirects forwarding s",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 36,
     "scanner": "Trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-44431\nSeverity: HIGH\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)\nsecurity-severity: 5.3\nurllib3: urllib3: Information disclosure via cross-origin redirects forwarding sensitive headers\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0.\nVulnerability CVE-2026-44431\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0.",
-    "reasoning": "The installed version of urllib3 (2.6.3) is vulnerable to CVE-2026-44431, which allows sensitive headers to be leaked to third-party origins during cross-origin redirects when using the low-level API with assert_same_host=False. This could result in the exposure of authentication tokens or other confidential data to unauthorized external servers.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.AC-04 Access to remote systems is managed",
-    "solution": "1. Update the urllib3 package in requirements.txt from version 2.6.3 to 2.7.0 or later to apply the security patch. 2. Review code paths using ProxyManager.connection_from_url().urlopen() to ensure assert_same_host=False is not used in contexts where sensitive headers are present, or implement custom header filtering logic. 3. Re-run the Trivy scan to confirm the vulnerability is resolved and no new issues are introduced by the version upgrade."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-017",
-    "title": "urllib3 Denial of Service Vulnerability",
+    "title": "urllib3: urllib3: Denial of Service due to excessive HTTP response decompression",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 36,
     "scanner": "Trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-44432\nSeverity: HIGH\nFixed Version: 2.7.0\nLink: [CVE-2026-44432](https://avd.aquasec.com/nvd/cve-2026-44432)\nsecurity-severity: 7.5\nurllib3: urllib3: Denial of Service due to excessive HTTP response decompression\nurllib3 is an HTTP client library for Python. From 2.6.0 to before 2.7.0, urllib3 could decompress the whole response instead of the requested portion (1) during the second HTTPResponse.read(amt=N) call when the response was decompressed using the official Brotli library or (2) when HTTPResponse.drain_conn() was called after the response had been read and decompressed partially (compression algorithm did not matter here). These issues could cause urllib3 to fully decode a small amount of highly compressed data in a single operation. This could result in excessive resource consumption (high CPU usage and massive memory allocation for the decompressed data) on the client side. This vulnerability is fixed in 2.7.0.\nVulnerability CVE-2026-44432\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.7.0\nLink: [CVE-2026-44432](https://avd.aquasec.com/nvd/cve-2026-44432)\nurllib3 is an HTTP client library for Python. From 2.6.0 to before 2.7.0, urllib3 could decompress the whole response instead of the requested portion (1) during the second HTTPResponse.read(amt=N) call when the response was decompressed using the official Brotli library or (2) when HTTPResponse.drain_conn() was called after the response had been re",
-    "reasoning": "The installed version of urllib3 (2.6.3) is vulnerable to a Denial of Service attack where an attacker can send highly compressed data that causes excessive CPU and memory consumption during decompression. This can lead to service unavailability or resource exhaustion on the client side.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04: The organization's information system is protected from or recovers from attacks",
-    "solution": "1. Update the urllib3 package in requirements.txt from version 2.6.3 to 2.7.0 or later to apply the security patch. 2. Run 'pip install --upgrade urllib3' in the development environment to verify the update resolves the dependency conflict. 3. Re-run the Trivy scanner to confirm that CVE-2026-44432 is no longer detected in the dependency tree."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-018",
-    "title": "urllib3 HTTPS Proxy TLS Interception",
+    "title": "urllib3: urllib3: Traffic interception via HTTPS proxy TLS configuration overrid",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 36,
     "scanner": "Trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-97687\nSeverity: HIGH\nFixed Version: 2.8.0\nLink: [CVE-2026-97687](https://avd.aquasec.com/nvd/cve-2026-97687)\nsecurity-severity: 8.0\nurllib3: urllib3: Traffic interception via HTTPS proxy TLS configuration override\nurllib3 is an HTTP client library for Python. From 1.26.0 until 2.8.0, the proxy_ssl_context, proxy_assert_hostname, proxy_assert_fingerprint, ssl_context, cert_reqs, verify_mode, use_forwarding_for_https=True, and CERT_NONE configuration paths fail to remain separated because target-server TLS settings are incorrectly applied to the HTTPS proxy connection. The trigger is that an application uses an HTTPS proxy and configures target-server TLS settings that must remain separate from the proxy TLS handshake, including HTTPS forwarding with target-specific identity or credentials. Applying cert_reqs=CERT_NONE can overwrite proxy_ssl_context.verify_mode in place, and the mutation persists so later connections reusing the same context may connect to the HTTPS proxy without certificate verification. The attack mechanism is that an attacker intercepts and impersonates the HTTPS proxy after the effective proxy policy accepts the attacker's certificate. The impact is that the attacker can observe or modify forwarded traffic or receive a target TLS client certificate, while CONNECT tunneling still preserves the separate end-to-end target TLS connection. This issue is fixed in version 2.8.0.\nVulnerability CVE-20",
-    "reasoning": "The installed version of urllib3 (2.6.3) contains a flaw where target-server TLS settings, such as cert_reqs=CERT_NONE, can incorrectly overwrite the proxy's TLS context, causing the client to accept an attacker's certificate for the HTTPS proxy. This allows a man-in-the-middle attacker to intercept and modify traffic or steal client credentials intended for the target server.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.DS-01 Data-at-rest is protected",
-    "solution": "1. Update the urllib3 package in requirements.txt from version 2.6.3 to 2.8.0 or later to apply the official fix for CVE-2026-97687. 2. Audit the application code to ensure that target-server TLS configurations (like cert_reqs or ssl_context) are not being passed in a way that mutates the shared proxy SSL context. 3. Implement strict TLS verification for all proxy connections and avoid using CERT_NONE or disabling hostname verification unless absolutely necessary and isolated."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-019",
-    "title": "urllib3 Unbounded Memory Allocation DoS",
+    "title": "urllib3: urllib3: Denial of Service via unbounded memory allocation in chunk par",
     "severity": "HIGH",
     "file": "requirements.txt",
     "line": 36,
     "scanner": "Trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-97689\nSeverity: HIGH\nFixed Version: 2.8.0\nLink: [CVE-2026-97689](https://avd.aquasec.com/nvd/cve-2026-97689)\nsecurity-severity: 8.0\nurllib3: urllib3: Denial of Service via unbounded memory allocation in chunk parser\nurllib3 is an HTTP client library for Python. From 1.10.3 until 2.8.0, the HTTPResponse.read_chunked and HTTPResponse.stream methods can allocate unbounded memory because the streaming chunk parser buffers the chunk-size field until newline or EOF without a length bound. The trigger is that a malicious server returns Transfer-Encoding: chunked followed by a very long run of bytes without a newline. The attack mechanism is that a malicious HTTP server sends a very long unterminated chunk-size line. The impact is that unbounded memory allocation can exhaust the client process. This issue is fixed in version 2.8.0.\nVulnerability CVE-2026-97689\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.8.0\nLink: [CVE-2026-97689](https://avd.aquasec.com/nvd/cve-2026-97689)\nurllib3 is an HTTP client library for Python. From 1.10.3 until 2.8.0, the HTTPResponse.read_chunked and HTTPResponse.stream methods can allocate unbounded memory because the streaming chunk parser buffers the chunk-size field until newline or EOF without a length bound. The trigger is that a malicious server returns Transfer-Encoding: chunked followed by a very long run of bytes without a newline. The attack mechanism is that a malicious HTTP se",
-    "reasoning": "The installed version of urllib3 (2.6.3) is vulnerable to CVE-2026-97689, where a malicious server can send an unterminated chunk-size line to trigger unbounded memory allocation. This allows an attacker to exhaust the client process's memory, leading to a Denial of Service.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04: The organization's software, firmware, and information are protected from or recover from malicious code.",
-    "solution": "1. Update the urllib3 package in requirements.txt from version 2.6.3 to at least 2.8.0 to include the fix for the chunk parser memory allocation issue. 2. Run 'pip install --upgrade urllib3' or 'poetry update urllib3' (depending on your package manager) to apply the update in the local environment. 3. Re-run the Trivy scan to verify that CVE-2026-97689 is no longer reported for the urllib3 package."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-020",
@@ -273,11 +273,11 @@
     "line": 21,
     "scanner": "Semgrep",
     "evidence": "uses: actions/checkout@v7\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using a mutable tag like `v7` for `actions/checkout` allows the action owner to silently update the code, potentially introducing malicious logic that executes with the workflow's permissions. This creates a supply-chain risk where an attacker could compromise the repository or exfiltrate secrets if the tag is repointed to a malicious commit.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are authenticated prior to installation",
-    "solution": "1. Identify the specific commit SHA corresponding to the `v7` tag of `actions/checkout` by checking the GitHub repository tags. 2. Replace `uses: actions/checkout@v7` on line 21 of `.github/workflows/reports-change-workflow.yml` with `uses: actions/checkout@<full-40-char-sha>`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-021",
@@ -287,11 +287,11 @@
     "line": 24,
     "scanner": "Semgrep",
     "evidence": "uses: actions/setup-python@v7\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using a mutable tag like `v7` for `actions/setup-python` allows the action owner to silently update the code, potentially introducing malicious logic that executes in your CI/CD pipeline. This creates a supply-chain risk where compromised or malicious code could be injected into your build environment without your explicit approval.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04: The organization's software, firmware, and information are protected from or guarded against unauthorized access, modification, or destruction.",
-    "solution": "1. Identify the current commit SHA for the `v7` tag of `actions/setup-python` by checking the GitHub repository tags or using `git rev-list -n 1 v7` in a local clone. 2. Replace `uses: actions/setup-python@v7` on line 24 of `.github/workflows/reports-change-workflow.yml` with `uses: actions/setup-python@<full-40-char-sha>`. 3. Add a comment above the step indicating the version (e.g., `# v7`) to maintain readability while ensuring the pinned SHA is used for execution."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-022",
@@ -301,11 +301,11 @@
     "line": 17,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/checkout@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using a mutable tag like `v4` for `actions/checkout` allows the action owner to silently update the code, potentially introducing malicious logic that executes with the workflow's permissions. This creates a supply-chain risk where an attacker could compromise the repository or exfiltrate secrets if the tag is repointed to a malicious commit.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are authenticated prior to installation",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/checkout` (e.g., `8ade135a41bc03ea155e62e844d188df1ea18608`). 2. Edit `.github/workflows/workflow.yml` at line 17 to replace `actions/checkout@v4` with `actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-023",
@@ -315,11 +315,11 @@
     "line": 23,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/upload-artifact@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using the mutable tag `v4` for `actions/upload-artifact` allows the action owner to silently repoint the tag to a malicious commit, enabling supply-chain attacks that could compromise build artifacts or CI/CD pipelines. This vulnerability is demonstrated by past incidents like the trivy-action compromise, where attackers exploited mutable references to inject malicious code.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are protected from unauthorized access and tampering",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/upload-artifact` by checking the GitHub repository's tags page or using `git ls-remote --tags https://github.com/actions/upload-artifact`. 2. Replace `uses: actions/upload-artifact@v4` on line 23 of `.github/workflows/workflow.yml` with `uses: actions/upload-artifact@<full-40-char-SHA>`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates, and consider implementing a Dependabot or Renovate configuration to automatically update pinned SHAs when new versions are released."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-024",
@@ -329,11 +329,11 @@
     "line": 34,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/checkout@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using a mutable tag like `v4` for `actions/checkout` allows the action owner to silently update the code, potentially introducing malicious logic that executes with the workflow's permissions. This creates a supply-chain risk where an attacker could compromise the repository or exfiltrate secrets if the tag is repointed to a malicious commit.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are authenticated prior to installation",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/checkout` (e.g., `8ade135a41bc03ea155e62e844d188df1ea18608`). 2. Edit `.github/workflows/workflow.yml` at line 17 to replace `actions/checkout@v4` with `actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-025",
@@ -343,11 +343,11 @@
     "line": 37,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/upload-artifact@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using the mutable tag `v4` for `actions/upload-artifact` allows the action owner to silently repoint the tag to a malicious commit, enabling supply-chain attacks that could compromise build artifacts or CI/CD pipelines. This vulnerability is demonstrated by past incidents like the trivy-action compromise, where attackers exploited mutable references to inject malicious code.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are protected from unauthorized access and tampering",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/upload-artifact` by checking the GitHub repository's tags page or using `git ls-remote --tags https://github.com/actions/upload-artifact`. 2. Replace `uses: actions/upload-artifact@v4` on line 23 of `.github/workflows/workflow.yml` with `uses: actions/upload-artifact@<full-40-char-SHA>`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates, and consider implementing a Dependabot or Renovate configuration to automatically update pinned SHAs when new versions are released."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-026",
@@ -357,11 +357,11 @@
     "line": 46,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/checkout@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using a mutable tag like `v4` for `actions/checkout` allows the action owner to silently update the code, potentially introducing malicious logic that executes with the workflow's permissions. This creates a supply-chain risk where an attacker could compromise the repository or exfiltrate secrets if the tag is repointed to a malicious commit.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are authenticated prior to installation",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/checkout` (e.g., `8ade135a41bc03ea155e62e844d188df1ea18608`). 2. Edit `.github/workflows/workflow.yml` at line 17 to replace `actions/checkout@v4` with `actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-027",
@@ -371,11 +371,11 @@
     "line": 50,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/upload-artifact@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using the mutable tag `v4` for `actions/upload-artifact` allows the action owner to silently repoint the tag to a malicious commit, enabling supply-chain attacks that could compromise build artifacts or CI/CD pipelines. This vulnerability is demonstrated by past incidents like the trivy-action compromise, where attackers exploited mutable references to inject malicious code.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are protected from unauthorized access and tampering",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/upload-artifact` by checking the GitHub repository's tags page or using `git ls-remote --tags https://github.com/actions/upload-artifact`. 2. Replace `uses: actions/upload-artifact@v4` on line 23 of `.github/workflows/workflow.yml` with `uses: actions/upload-artifact@<full-40-char-SHA>`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates, and consider implementing a Dependabot or Renovate configuration to automatically update pinned SHAs when new versions are released."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-028",
@@ -385,11 +385,11 @@
     "line": 58,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/checkout@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using a mutable tag like `v4` for `actions/checkout` allows the action owner to silently update the code, potentially introducing malicious logic that executes with the workflow's permissions. This creates a supply-chain risk where an attacker could compromise the repository or exfiltrate secrets if the tag is repointed to a malicious commit.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are authenticated prior to installation",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/checkout` (e.g., `8ade135a41bc03ea155e62e844d188df1ea18608`). 2. Edit `.github/workflows/workflow.yml` at line 17 to replace `actions/checkout@v4` with `actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-029",
@@ -399,11 +399,11 @@
     "line": 59,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/setup-python@v5\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using a mutable tag like `v5` for `actions/setup-python` allows the action owner to silently update the code behind that tag, potentially introducing malicious logic that executes in your CI/CD pipeline. This creates a supply-chain risk where compromised or malicious code could be injected into your build process without your explicit approval of the specific change.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are authenticated prior to installation",
-    "solution": "1. Identify the current commit SHA associated with the `v5` tag for `actions/setup-python` by checking the GitHub repository tags or using `git rev-list -n 1 v5` in a local clone of the action repository. 2. Replace `uses: actions/setup-python@v5` on line 59 of `.github/workflows/workflow.yml` with `uses: actions/setup-python@<full-40-char-sha>`. 3. Add a comment next to the pinned SHA indicating the version (e.g., `# v5`) to maintain readability and ease future updates."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-030",
@@ -413,11 +413,11 @@
     "line": 64,
     "scanner": "Semgrep",
     "evidence": "- uses: actions/upload-artifact@v4\nGitHub Actions step uses a mutable tag or branch reference. Tags and branch names can be silently repointed by the action owner, enabling supply-chain attacks \u2014 as seen in the trivy-action and kics-github-action compromises. Pin the reference to a full 40-character commit SHA instead, e.g. `uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608`.",
-    "reasoning": "Using the mutable tag `v4` for `actions/upload-artifact` allows the action owner to silently repoint the tag to a malicious commit, enabling supply-chain attacks that could compromise build artifacts or CI/CD pipelines. This vulnerability is demonstrated by past incidents like the trivy-action compromise, where attackers exploited mutable references to inject malicious code.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 11,
     "owasp_category": "A08:2021 - Software and Data Integrity Failures",
-    "nist_control": "PR.IP-04 Software, firmware, and associated documentation are protected from unauthorized access and tampering",
-    "solution": "1. Identify the current commit SHA for the `v4` tag of `actions/upload-artifact` by checking the GitHub repository's tags page or using `git ls-remote --tags https://github.com/actions/upload-artifact`. 2. Replace `uses: actions/upload-artifact@v4` on line 23 of `.github/workflows/workflow.yml` with `uses: actions/upload-artifact@<full-40-char-SHA>`. 3. Add a comment above the step indicating the version and date of the pin to facilitate future updates, and consider implementing a Dependabot or Renovate configuration to automatically update pinned SHAs when new versions are released."
+    "nist_control": "PR.DS-06 Integrity checking is used",
+    "solution": ""
   },
   {
     "id": "finding-031",
@@ -427,11 +427,11 @@
     "line": 28,
     "scanner": "Semgrep",
     "evidence": "app.run(debug=True, port=5001)\nDetected Flask app with debug=True. Do not deploy to production with this flag enabled as it will leak sensitive information. Instead, consider using Flask configuration variables or setting 'debug' using system environment variables.",
-    "reasoning": "Enabling debug mode in Flask exposes the Werkzeug interactive debugger, which allows remote code execution if an exception occurs, and leaks sensitive source code and environment variables. This creates a critical attack surface where an unauthenticated user can gain full control of the server by triggering a specific error.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A05:2021 - Security Misconfiguration",
-    "nist_control": "PR.AC-04 Access to local and remote systems is limited to only official accounts",
-    "solution": "1. Remove the `debug=True` argument from `app.run()` on line 28 of `Backend/server.py`. 2. Set the `FLASK_DEBUG` environment variable to `0` or `false` in the production deployment configuration. 3. Ensure the application is run behind a production-grade WSGI server (like Gunicorn or uWSGI) rather than the built-in Flask development server."
+    "nist_control": "PR.PS-01 Configuration management practices",
+    "solution": ""
   },
   {
     "id": "finding-032",
@@ -441,109 +441,109 @@
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42308\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42308](https://avd.aquasec.com/nvd/cve-2026-42308)\nsecurity-severity: 5.5\nPillow: Pillow: Denial of Service via integer overflow in font processing\nPillow is a Python imaging library. Prior to version 12.2.0, if a font advances for each glyph by an exceeding large amount, when Pillow keeps track of the current position, it may lead to an integer overflow. This issue has been patched in version 12.2.0.\nVulnerability CVE-2026-42308\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42308](https://avd.aquasec.com/nvd/cve-2026-42308)\nPillow is a Python imaging library. Prior to version 12.2.0, if a font advances for each glyph by an exceeding large amount, when Pillow keeps track of the current position, it may lead to an integer overflow. This issue has been patched in version 12.2.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to an integer overflow in font processing, which can be triggered by maliciously crafted font files to cause a Denial of Service. An attacker could exploit this by uploading a specially crafted image or font file, leading to application crashes or resource exhaustion.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` package in `requirements.txt` from version 11.3.0 to at least 12.2.0 to include the patch for CVE-2026-42308. 2. Run `pip install --upgrade pillow` or `poetry update pillow` (depending on your package manager) to apply the update in the development environment. 3. Re-run the Trivy scan to confirm that the vulnerability is resolved and no new issues have been introduced by the version bump."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-033",
-    "title": "Pillow Heap Buffer Overflow DoS",
+    "title": "Pillow: Pillow: Denial of Service via specially crafted coordinate input",
     "severity": "MEDIUM",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42309\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42309](https://avd.aquasec.com/nvd/cve-2026-42309)\nsecurity-severity: 5.5\nPillow: Pillow: Denial of Service via specially crafted coordinate input\nPillow is a Python imaging library. From version 11.2.1 to before version 12.2.0, passing nested lists as coordinates to APIs that accept coordinates such as ImagePath.Path, ImageDraw.ImageDraw.polygon and ImageDraw.ImageDraw.line could cause a heap buffer overflow, as nested lists were recursively unpacked beyond the allocated buffer. Coordinate lists are now validated to contain exactly two numeric coordinates. This issue has been patched in version 12.2.0.\nVulnerability CVE-2026-42309\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42309](https://avd.aquasec.com/nvd/cve-2026-42309)\nPillow is a Python imaging library. From version 11.2.1 to before version 12.2.0, passing nested lists as coordinates to APIs that accept coordinates such as ImagePath.Path, ImageDraw.ImageDraw.polygon and ImageDraw.ImageDraw.line could cause a heap buffer overflow, as nested lists were recursively unpacked beyond the allocated buffer. Coordinate lists are now validated to contain exactly two numeric coordinates. This issue has been patched in version 12.2.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to a heap buffer overflow when processing nested lists as coordinates in drawing APIs, which can be triggered by malicious input to cause a Denial of Service. This risk is mitigated by upgrading to version 12.2.0, which adds validation to ensure coordinate lists contain exactly two numeric values.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` dependency in `requirements.txt` (line 19) from version 11.3.0 to at least 12.2.0. 2. Run `pip install --upgrade pillow` or `poetry update pillow` to apply the patch in the local environment. 3. Re-run the Trivy scan to confirm that CVE-2026-42309 is no longer reported for the `pillow` package."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-034",
-    "title": "Pillow PDF Processing Denial of Service",
+    "title": "Pillow: Pillow: Denial of Service via malicious PDF processing",
     "severity": "MEDIUM",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42310\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42310](https://avd.aquasec.com/nvd/cve-2026-42310)\nsecurity-severity: 5.5\nPillow: Pillow: Denial of Service via malicious PDF processing\nPillow is a Python imaging library. From version 4.2.0 to before version 12.2.0, an attacker can supply a malicious PDF that causes the process to hang indefinitely, consuming 100% CPU and making the application unresponsive. This issue has been patched in version 12.2.0.\nVulnerability CVE-2026-42310\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42310](https://avd.aquasec.com/nvd/cve-2026-42310)\nPillow is a Python imaging library. From version 4.2.0 to before version 12.2.0, an attacker can supply a malicious PDF that causes the process to hang indefinitely, consuming 100% CPU and making the application unresponsive. This issue has been patched in version 12.2.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-42310, which allows an attacker to cause a Denial of Service by submitting a malicious PDF that hangs the process and consumes 100% CPU. This can render the application unresponsive and degrade service availability for all users.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` package in `requirements.txt` (line 19) from version 11.3.0 to at least version 12.2.0 to include the patch for CVE-2026-42310. 2. Run `pip install --upgrade pillow` or `poetry update pillow` to apply the update in the local environment and lock file. 3. Implement input validation and resource limits (e.g., timeouts) for PDF processing to mitigate similar DoS vectors in case other unpatched libraries are present."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-035",
-    "title": "Pillow Command Injection via File Paths",
+    "title": "python-pillow: Pillow: Arbitrary command injection via shell metacharacters in f",
     "severity": "MEDIUM",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-55798\nSeverity: MEDIUM\nFixed Version: 12.3.0\nLink: [CVE-2026-55798](https://avd.aquasec.com/nvd/cve-2026-55798)\nsecurity-severity: 4.5\npython-pillow: Pillow: Arbitrary command injection via shell metacharacters in file paths\nPillow is a Python imaging library. Prior to 12.3.0, WindowsViewer.get_command() constructed a cmd.exe shell command by directly embedding a file path into an f-string without escaping and passed the result to subprocess.Popen(..., shell=True), allowing shell metacharacters in the file path to inject arbitrary cmd.exe commands. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-55798\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-55798](https://avd.aquasec.com/nvd/cve-2026-55798)\nPillow is a Python imaging library. Prior to 12.3.0, WindowsViewer.get_command() constructed a cmd.exe shell command by directly embedding a file path into an f-string without escaping and passed the result to subprocess.Popen(..., shell=True), allowing shell metacharacters in the file path to inject arbitrary cmd.exe commands. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to command injection because WindowsViewer.get_command() embeds unescaped file paths into a shell command executed via subprocess.Popen with shell=True. An attacker who can control the file path passed to the viewer could inject arbitrary cmd.exe commands, leading to remote code execution on Windows systems.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-01: The organization inventories software components of information systems",
-    "solution": "1. Update the pillow package in requirements.txt from version 11.3.0 to 12.3.0 or later to apply the official fix for CVE-2026-55798. 2. Run pip install --upgrade pillow to install the patched version and verify the change with pip show pillow. 3. Review any custom code that calls WindowsViewer or passes user-controlled file paths to image viewing functions to ensure inputs are sanitized or validated against a whitelist of safe characters."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-036",
-    "title": "Pillow TGA RLE Out-of-Bounds Read",
+    "title": "Pillow: Pillow: Information disclosure via TGA RLE encoder out-of-bounds read",
     "severity": "MEDIUM",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "Trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59198\nSeverity: MEDIUM\nFixed Version: 12.3.0\nLink: [CVE-2026-59198](https://avd.aquasec.com/nvd/cve-2026-59198)\nsecurity-severity: 6.5\nPillow: Pillow: Information disclosure via TGA RLE encoder out-of-bounds read\nPillow is a Python imaging library. From 5.2.0 until 12.3.0, Pillow's TGA RLE encoder reads past its packed row buffer when saving a mode 1 image with TGA RLE compression, allowing adjacent process heap bytes to be copied into the generated TGA file. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59198\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59198](https://avd.aquasec.com/nvd/cve-2026-59198)\nPillow is a Python imaging library. From 5.2.0 until 12.3.0, Pillow's TGA RLE encoder reads past its packed row buffer when saving a mode 1 image with TGA RLE compression, allowing adjacent process heap bytes to be copied into the generated TGA file. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to an out-of-bounds read in the TGA RLE encoder, which can leak adjacent heap memory into generated TGA files. This information disclosure could expose sensitive data from the application's memory to anyone who receives the generated image.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04 Software, firmware, and information processing systems are protected from or protected against malicious code",
-    "solution": "1. Update the `pillow` package in `requirements.txt` from version 11.3.0 to at least 12.3.0 to include the fix for CVE-2026-59198. 2. Run `pip install --upgrade pillow` or `poetry update pillow` (depending on your package manager) to apply the update in the development environment. 3. Re-run the Trivy scan to confirm the vulnerability is resolved and ensure no other dependencies are affected by similar issues."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-037",
-    "title": "Requests Predictable Temp File Security Bypass",
+    "title": "requests: Requests: Security bypass due to predictable temporary file creation",
     "severity": "MEDIUM",
     "file": "requirements.txt",
     "line": 26,
     "scanner": "Trivy",
     "evidence": "Package: requests\nInstalled Version: 2.32.5\nVulnerability CVE-2026-25645\nSeverity: MEDIUM\nFixed Version: 2.33.0\nLink: [CVE-2026-25645](https://avd.aquasec.com/nvd/cve-2026-25645)\nsecurity-severity: 4.4\nrequests: Requests: Security bypass due to predictable temporary file creation\nRequests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility function uses a predictable filename when extracting files from zip archives into the system temporary directory. If the target file already exists, it is reused without validation. A local attacker with write access to the temp directory could pre-create a malicious file that would be loaded in place of the legitimate one. Standard usage of the Requests library is not affected by this vulnerability. Only applications that call `extract_zipped_paths()` directly are impacted. Starting in version 2.33.0, the library extracts files to a non-deterministic location. If developers are unable to upgrade, they can set `TMPDIR` in their environment to a directory with restricted write access.\nVulnerability CVE-2026-25645\nSeverity: MEDIUM\nPackage: requests\nFixed Version: 2.33.0\nLink: [CVE-2026-25645](https://avd.aquasec.com/nvd/cve-2026-25645)\nRequests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility function uses a predictable filename when extracting files from zip archives into the system temporary directory. If the target file already exists, it is reused w",
-    "reasoning": "The installed version of the `requests` library (2.32.5) is vulnerable to CVE-2026-25645, where the `extract_zipped_paths()` function uses predictable temporary filenames that can be pre-created by a local attacker to inject malicious content. This allows a local attacker with write access to the temporary directory to bypass security controls by replacing legitimate extracted files with malicious ones.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-10: The organization implements and manages a software integrity verification process",
-    "solution": "1. Upgrade the `requests` package in `requirements.txt` (line 26) from version 2.32.5 to at least 2.33.0 to utilize the non-deterministic temporary file extraction fix. 2. If an immediate upgrade is not possible, set the `TMPDIR` environment variable to a directory with strict write permissions (e.g., owned by the application user only) to prevent local attackers from pre-creating files. 3. Audit the codebase to ensure that `requests.utils.extract_zipped_paths()` is not being called with untrusted input or in a context where local file system access is shared with untrusted users."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-038",
-    "title": "Streamlit Unauthenticated SSRF Vulnerability",
+    "title": "Unauthenticated SSRF Vulnerability in Streamlit on Windows (NTLM Credential Expo",
     "severity": "MEDIUM",
     "file": "requirements.txt",
     "line": 30,
     "scanner": "Trivy",
     "evidence": "Package: streamlit\nInstalled Version: 1.50.0\nVulnerability CVE-2026-33682\nSeverity: MEDIUM\nFixed Version: 1.54.0\nLink: [CVE-2026-33682](https://avd.aquasec.com/nvd/cve-2026-33682)\nsecurity-severity: 4.7\nUnauthenticated SSRF Vulnerability in Streamlit on Windows (NTLM Credential Exposure)\nStreamlit is a data oriented application development framework for python. Streamlit Open Source versions prior to 1.54.0 running on Windows hosts have an unauthenticated Server-Side Request Forgery (SSRF) vulnerability. The vulnerability arises from improper validation of attacker-supplied filesystem paths. In certain code paths, including within the `ComponentRequestHandler`, filesystem paths are resolved using `os.path.realpath()` or `Path.resolve()` before sufficient validation occurs. On Windows systems, supplying a malicious UNC path (e.g., `\\\\attacker-controlled-host\\share`) can cause the Streamlit server to initiate outbound SMB connections over port 445. When Windows attempts to authenticate to the remote SMB server, NTLMv2 challenge-response credentials of the Windows user running the Streamlit process may be transmitted. This behavior may allow an attacker to perform NTLM relay attacks against other internal services and/or identify internally reachable SMB hosts via timing analysis. The vulnerability has been fixed in Streamlit Open Source version 1.54.0.\nVulnerability CVE-2026-33682\nSeverity: MEDIUM\nPackage: streamlit\nFixed Version: 1.54.0\nLink: [CVE-2026-33682](https://avd.aquas",
-    "reasoning": "The installed version of Streamlit (1.50.0) is vulnerable to an unauthenticated SSRF attack on Windows, where malicious UNC paths can trigger outbound SMB connections that leak NTLMv2 credentials. This exposure allows attackers to perform NTLM relay attacks against internal services or map the internal network via timing analysis.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.PT-03 Network connections are protected",
-    "solution": "1. Update the `streamlit` package in `requirements.txt` (line 30) from version 1.50.0 to at least 1.54.0 to apply the vendor fix for CVE-2026-33682. 2. If an immediate upgrade is not possible, configure the Windows host to disable SMBv1 and restrict outbound SMB traffic (port 445) to trusted internal subnets only via firewall rules. 3. Implement application-level input validation to reject any user-supplied filesystem paths containing UNC prefixes (e.g., `\\\\`) before they reach the `ComponentRequestHandler`."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-039",
-    "title": "urllib3 Infinite Loop DoS Vulnerability",
+    "title": "urllib3: urllib3: Denial of Service via infinite loop during chunked Deflate dec",
     "severity": "MEDIUM",
     "file": "requirements.txt",
     "line": 36,
     "scanner": "Trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-97688\nSeverity: MEDIUM\nFixed Version: 2.8.0\nLink: [CVE-2026-97688](https://avd.aquasec.com/nvd/cve-2026-97688)\nsecurity-severity: 5.5\nurllib3: urllib3: Denial of Service via infinite loop during chunked Deflate decoding\nurllib3 is an HTTP client library for Python. From 2.6.2 until 2.8.0, HTTPResponse.stream and HTTPResponse.read_chunked can enter an infinite loop because the Deflate decoder retains trailing bytes as unconsumed input after reaching end-of-stream and repeatedly decodes them without progress. The issue occurs when an untrusted server sends a chunked Deflate response whose decoded body exceeds a positive finite chunk size and whose encoded body has trailing bytes, specifically a response with Transfer-Encoding: chunked and Content-Encoding: deflate, content decoding enabled, and the positive finite amt=N streaming chunk size. The attack mechanism is that a malicious server returns a compressed chunked response with trailing bytes after the Deflate stream. The impact is excessive CPU usage and a request that does not complete, and network read timeouts do not interrupt the loop because no further socket read occurs. This issue is fixed in version 2.8.0.\nVulnerability CVE-2026-97688\nSeverity: MEDIUM\nPackage: urllib3\nFixed Version: 2.8.0\nLink: [CVE-2026-97688](https://avd.aquasec.com/nvd/cve-2026-97688)\nurllib3 is an HTTP client library for Python. From 2.6.2 until 2.8.0, HTTPResponse.stream and HTTPR",
-    "reasoning": "The installed version of urllib3 (2.6.3) is vulnerable to CVE-2026-97688, where a malicious server can send a chunked Deflate response with trailing bytes to trigger an infinite loop in the decoder. This results in a Denial of Service through excessive CPU usage and hung requests that standard network timeouts cannot interrupt.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.IP-04: The organization's software, firmware, and information are protected from or guarded against malicious code and unintended information modification and/or destruction.",
-    "solution": "1. Update the urllib3 package in requirements.txt from version 2.6.3 to at least 2.8.0 to apply the fix for the infinite loop vulnerability. 2. Run 'pip install --upgrade urllib3' or 'poetry update urllib3' (depending on your package manager) to install the patched version. 3. Verify the update by running 'pip show urllib3' or checking the lock file to ensure version 2.8.0 or higher is installed, and re-run Trivy to confirm the finding is resolved."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   },
   {
     "id": "finding-040",
@@ -553,38 +553,38 @@
     "line": 7,
     "scanner": "Bandit",
     "evidence": "6 import sys\n7 import subprocess\n8 import json\n",
-    "reasoning": "The import of the `subprocess` module in `Frontend/app.py` indicates a potential capability to execute system commands, which is a high-risk vector if any subsequent code passes unsanitized user input to functions like `subprocess.call` or `subprocess.run`. Without seeing the specific usage, the mere presence of this import in a frontend application file suggests a lack of separation of concerns and increases the attack surface for command injection if not strictly controlled.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
-    "owasp_category": "A03:2021 - Injection",
-    "nist_control": "PR.AC-04: Access to local and remote systems is limited to only official accounts and is managed using a formal process",
-    "solution": "Audit all usages of `subprocess` in `Frontend/app.py` to determine if system command execution is actually required for the frontend logic; if not, remove the import entirely. If command execution is necessary, ensure that no user-controlled data is passed to `subprocess` functions without strict validation and sanitization, and prefer using `shell=False` with a list of arguments to prevent shell interpretation. Implement a principle of least privilege by ensuring the application user running `Frontend/app.py` does not have elevated system permissions, limiting the impact of any potential command injection."
+    "owasp_category": "",
+    "nist_control": "",
+    "solution": ""
   },
   {
     "id": "finding-041",
     "title": "Subprocess Without Shell Execution",
     "severity": "LOW",
     "file": "Frontend/app.py",
-    "line": 212,
+    "line": 234,
     "scanner": "Bandit",
-    "evidence": "211 \n212                                     result = subprocess.run(\n213                                         [sys.executable, SCANNER_SCRIPT],\n214                                         cwd=BACKEND_DIR,\n215                                         capture_output=True,\n216                                         text=True,\n217                                         timeout=900,\n218                                     )\n219 \n",
-    "reasoning": "The code uses `subprocess.run` with a list argument, which is the secure method for executing commands as it prevents shell injection attacks. Since the command arguments are static and do not include user-controlled input, there is no evidence of a vulnerability in this specific snippet.",
+    "evidence": "233 \n234                                     result = subprocess.run(\n235                                         [sys.executable, SCANNER_SCRIPT],\n236                                         cwd=BACKEND_DIR,\n237                                         capture_output=True,\n238                                         text=True,\n239                                         timeout=900,\n240                                     )\n241 \n",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
-    "owasp_category": "A03:2021 - Injection",
-    "nist_control": "PR.AC-04 Access to local and remote systems is limited to only official accounts",
-    "solution": "1. Verify that `SCANNER_SCRIPT` and `BACKEND_DIR` are defined as static constants or validated against a whitelist to ensure they do not contain shell metacharacters. 2. Maintain the use of the list format for the command arguments to avoid invoking a shell. 3. Ensure that any environment variables or inputs passed to the subprocess are strictly validated and sanitized before use."
+    "owasp_category": "",
+    "nist_control": "",
+    "solution": ""
   },
   {
     "id": "finding-042",
-    "title": "Streamlit Weak Hash Usage Vulnerability",
+    "title": "streamlit: Streamlit: Weak hash usage leading to low integrity and availability ",
     "severity": "LOW",
     "file": "requirements.txt",
     "line": 30,
     "scanner": "Trivy",
     "evidence": "Package: streamlit\nInstalled Version: 1.50.0\nVulnerability CVE-2026-10804\nSeverity: LOW\nFixed Version: 1.53.1\nLink: [CVE-2026-10804](https://avd.aquasec.com/nvd/cve-2026-10804)\nsecurity-severity: 3.6\nstreamlit: Streamlit: Weak hash usage leading to low integrity and availability impact\nA vulnerability has been found in Streamlit up to 1.53.0. Impacted is an unknown function in the library lib/streamlit/runtime/caching/hashing.py of the component Palette Handler. Such manipulation leads to use of weak hash. Local access is required to approach this attack. The attack requires a high level of complexity. The exploitability is considered difficult. The exploit has been disclosed to the public and may be used. The pull request to fix this issue awaits acceptance.\nVulnerability CVE-2026-10804\nSeverity: LOW\nPackage: streamlit\nFixed Version: 1.53.1\nLink: [CVE-2026-10804](https://avd.aquasec.com/nvd/cve-2026-10804)\nA vulnerability has been found in Streamlit up to 1.53.0. Impacted is an unknown function in the library lib/streamlit/runtime/caching/hashing.py of the component Palette Handler. Such manipulation leads to use of weak hash. Local access is required to approach this attack. The attack requires a high level of complexity. The exploitability is considered difficult. The exploit has been disclosed to the public and may be used. The pull request to fix this issue awaits acceptance.",
-    "reasoning": "The installed version of Streamlit (1.50.0) uses a weak hashing algorithm in its caching mechanism (lib/streamlit/runtime/caching/hashing.py), which could allow a local attacker with high complexity to manipulate cache keys, potentially leading to data integrity issues or availability impacts. Although the exploitability is difficult and requires local access, using weak cryptographic primitives undermines the security of the application's state management.",
+    "reasoning": "AI reasoning unavailable (model did not respond)",
     "occurrences": 1,
     "owasp_category": "A06:2021 - Vulnerable and Outdated Components",
-    "nist_control": "PR.DS-01 Data-at-rest is protected",
-    "solution": "1. Update the streamlit package in requirements.txt from version 1.50.0 to 1.53.1 or later to include the fix for CVE-2026-10804. 2. Verify the update by running 'pip install streamlit==1.53.1' and confirming the version in the environment. 3. Review any custom code that interacts with Streamlit's caching mechanism to ensure it does not rely on the previous weak hash behavior."
+    "nist_control": "ID.RA-01 Vulnerabilities in assets are identified",
+    "solution": ""
   }
 ]

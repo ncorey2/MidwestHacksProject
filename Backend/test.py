@@ -16,7 +16,7 @@ START = time.time()
 BASE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.abspath(os.path.join(BASE, ".."))
 REPORTS = os.path.join(BASE, "..", "reports")
-MAX_WORKERS = 6   # lower to 3 if you see 429 / rate limit errors
+MAX_WORKERS = 3   # lower to 3 if you see 429 / rate limit errors
 
 print(f"Scanning repository: {REPO}")
 
