@@ -5,6 +5,9 @@ import requests
 import os
 import sys
 import subprocess
+import json
+import hashlib
+from datetime import datetime
 
 st.set_page_config (page_title= "AI Cybersecurity Risk Auditor", layout= "wide", initial_sidebar_state="expanded")
 
@@ -28,6 +31,73 @@ BACKEND_DIR = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "Backend")
 )
 SCANNER_SCRIPT = os.path.join(BACKEND_DIR, "test.py")
+HISTORY_FILE = os.path.join(BACKEND_DIR, "scan_history.json")
+
+
+def load_scan_history():
+    if not os.path.exists(HISTORY_FILE):
+        return []
+
+    try:
+        with open(HISTORY_FILE, "r", encoding="utf-8") as file:
+            history = json.load(file)
+
+        return history if isinstance(history, list) else []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def save_scan_history(findings):
+    history = load_scan_history()
+
+    def fingerprint(finding):
+        # Prefer the scanner's rule ID when available.
+        identity = {
+            "scanner": finding.get("scanner", ""),
+            "rule": finding.get("_rule", ""),
+            "file": finding.get("file", ""),
+            "line": finding.get("line"),
+            "title": finding.get("title", ""),
+        }
+        encoded = json.dumps(identity, sort_keys=True)
+        return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+    current = {
+        fingerprint(finding): finding
+        for finding in findings
+    }
+
+    previous = {}
+    if history:
+        previous = {
+            fingerprint(finding): finding
+            for finding in history[-1].get("findings", [])
+        }
+
+    new_ids = current.keys() - previous.keys()
+    resolved_ids = previous.keys() - current.keys()
+    unchanged_ids = current.keys() & previous.keys()
+
+    record = {
+        "scan_id": f"SCAN-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "status": "Complete",
+        "total_findings": len(findings),
+        "new_count": len(new_ids),
+        "resolved_count": len(resolved_ids),
+        "unchanged_count": len(unchanged_ids),
+        "new_findings": [current[key] for key in new_ids],
+        "resolved_findings": [previous[key] for key in resolved_ids],
+        "findings": findings,
+    }
+
+    history.append(record)
+
+    with open(HISTORY_FILE, "w", encoding="utf-8") as file:
+        json.dump(history, file, indent=2)
+
+    return record
+
 
 
 if "scan_status" not in st.session_state:
@@ -76,16 +146,20 @@ with st.sidebar:
                 findings = response.json()
 
                 st.session_state.scan_status = "Complete"
+                record = save_scan_history(findings)
 
-                import time
-                st.session_state.last_scan = time.strftime(
-                    "%Y-%m-%d %H:%M:%S"
-                )
+                st.session_state.last_scan = record["timestamp"]
 
                 st.success(
                     f"Pipeline complete! Loaded {len(findings)} findings."
                 )
 
+                st.write(
+                    f"New: {record['new_count']} · "
+                    f"Resolved: {record['resolved_count']} · "
+                    f"Unchanged: {record['unchanged_count']}"
+                )
+                
                 with st.expander("View pipeline logs"):
                     st.text(result.stdout[-10000:] or "No output.")
 

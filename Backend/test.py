@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import sys
 from collections import Counter
-import ollama
+
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(BASE, ".."))
@@ -27,7 +27,6 @@ client = OpenAI(
 )
 
 REPORTS = os.path.join(BASE, "..", "reports")
-MODEL = "qwen2.5:7b"
 GROUP_BATCH = 3
 
 SEV_RANK = {"CRITICAL": 0, "HIGH": 1, "MEDIUM": 2, "LOW": 3}
@@ -387,7 +386,7 @@ failed = sum(
 if failed:
     print(
         f"WARNING: {failed} findings have no AI reasoning. "
-        "Is Ollama running and the model pulled?"
+        "Check the API connection, credentials, and model configuration."
     )
 
 findings.sort(
