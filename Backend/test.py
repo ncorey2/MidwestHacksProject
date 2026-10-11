@@ -24,7 +24,12 @@ BANDIT_TITLES = {
 
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-REPO = os.path.abspath(os.path.join(BASE, ".."))
+if len(sys.argv) > 1:
+    REPO = os.path.abspath(sys.argv[1])
+else:
+    REPO = os.path.abspath(os.path.join(BASE, ".."))
+
+print(f"Scanning repository: {REPO}")
 
 load_dotenv(os.path.join(REPO, ".env"), override=True)
 

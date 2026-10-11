@@ -118,14 +118,17 @@ with st.sidebar:
     repository = st.text_input("Repository path", value= "", placeholder= "path/to/your/repository",)
 
     if st.button("▶ Scan repository", width="stretch"):
-        st.session_state.scan_status = "Scanning"
+        if not repository.strip():
+            st.error("Please enter a repository path before scanning.")
+        else:
+            st.session_state.scan_status = "Scanning"
 
         try:
             with st.spinner(
                 "Processing security reports and generating AI analysis..."
             ):
                 result = subprocess.run(
-                    [sys.executable, SCANNER_SCRIPT],
+                    [sys.executable, SCANNER_SCRIPT, repository.strip()],
                     cwd=BACKEND_DIR,
                     capture_output=True,
                     text=True,
@@ -398,28 +401,81 @@ elif page == "Security Findings" :
 
 elif page == "Scan History":
     st.subheader("Scan History")
-    st.write("Historical scan records will appear here after backend integration.")
+    st.caption("A record of every scan run against your repository.")
 
-    st.dataframe([{
-                "Scan": "DEMO-003",
-                "Date": "Sample",
-                "Trigger": "Scheduled",
-                "Findings": 5,
-                "Status": "Demo",
-            },
+    history = load_scan_history()
+
+    if not history:
+        st.info("No scan history yet. Run a scan from the sidebar to get started.")
+    else:
+        # Summary table
+        summary_rows = [
             {
-                "Scan": "DEMO-002",
-                "Date": "Sample",
-                "Trigger": "Manual",
-                "Findings": 3,
-                "Status": "Demo",
-            },
-        ],
-        width="stretch",
-        hide_index=True,
-    )
+                "Scan ID": record.get("scan_id", "—"),
+                "Timestamp": record.get("timestamp", "—"),
+                "Status": record.get("status", "—"),
+                "Total Findings": record.get("total_findings", 0),
+                "New": record.get("new_count", 0),
+                "Resolved": record.get("resolved_count", 0),
+                "Unchanged": record.get("unchanged_count", 0),
+            }
+            for record in reversed(history)  # newest first
+        ]
 
-st.divider()
-st.caption(
-    "AI Cybersecurity Risk Auditor · Prototype · "
-)
+        st.dataframe(summary_rows, width="stretch", hide_index=True)
+
+        # Trend chart
+        if len(history) > 1:
+            st.subheader("Risk Trend")
+            trend_df = pd.DataFrame([
+                {
+                    "Scan": record.get("scan_id", ""),
+                    "Total": record.get("total_findings", 0),
+                    "New": record.get("new_count", 0),
+                    "Resolved": record.get("resolved_count", 0),
+                }
+                for record in history
+            ])
+
+            fig = px.line(
+                trend_df,
+                x="Scan",
+                y=["Total", "New", "Resolved"],
+                markers=True,
+                template="plotly_dark",
+                color_discrete_map={
+                    "Total": "#60A5FA",
+                    "New": "#EF4444",
+                    "Resolved": "#22C55E"
+                }
+            )
+            fig.update_layout(
+                xaxis_title="Scan",
+                yaxis_title="Findings",
+                margin=dict(l=20, r=20, t=20, b=20)
+            )
+            st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
+
+        # Drill into a specific scan
+        st.subheader("Inspect a Scan")
+        scan_ids = [r.get("scan_id") for r in reversed(history)]
+        selected_scan_id = st.selectbox("Select scan", scan_ids)
+
+        selected_record = next(
+            r for r in history if r.get("scan_id") == selected_scan_id
+        )
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Total", selected_record.get("total_findings", 0))
+        col2.metric("New", selected_record.get("new_count", 0))
+        col3.metric("Resolved", selected_record.get("resolved_count", 0))
+
+        if selected_record.get("new_findings"):
+            with st.expander(f"🔴 New findings ({selected_record['new_count']})"):
+                for f in selected_record["new_findings"]:
+                    st.write(f"**{f['title']}** — `{f['file']}` line {f['line']}")
+
+        if selected_record.get("resolved_findings"):
+            with st.expander(f"✅ Resolved findings ({selected_record['resolved_count']})"):
+                for f in selected_record["resolved_findings"]:
+                    st.write(f"**{f['title']}** — `{f['file']}` line {f['line']}")

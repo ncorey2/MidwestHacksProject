@@ -95,7 +95,7 @@
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-40192\nSeverity: HIGH\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)\nsecurity-severity: 7.5\nPillow: Pillow: Denial of Service via decompression bomb in FITS image processing\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround.\nVulnerability CVE-2026-40192\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround.",
-    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-40192, a HIGH severity denial-of-service flaw where unbounded GZIP decompression of FITS images can cause OOM crashes, requiring an upgrade to version 12.2.0.",
+    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-40192, a HIGH severity denial-of-service flaw where unbounded GZIP decompression of FITS images can cause out-of-memory crashes, requiring an upgrade to version 12.2.0.",
     "occurrences": 1
   },
   {
@@ -122,13 +122,13 @@
   },
   {
     "id": "finding-012",
-    "title": "Pillow PCF Font DoS Vulnerability",
+    "title": "Pillow PCF Font Denial of Service",
     "severity": "ERROR",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54059\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)\nsecurity-severity: 7.5\npython-pillow: Pillow: Denial of Service via crafted PCF font data\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-54059\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-54059, a HIGH severity denial-of-service flaw where crafted PCF font data triggers excessive memory allocation in PIL/PcfFontFile.py because the _load_bitmaps() function fails to perform a decompression bomb check before calling Image.frombytes().",
+    "reasoning": "The installed pillow version 11.3.0 is vulnerable to CVE-2026-54059, a HIGH severity denial of service caused by excessive memory allocation when processing crafted PCF font data due to missing decompression bomb checks in _load_bitmaps().",
     "occurrences": 1
   },
   {
@@ -238,7 +238,7 @@
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42309\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42309](https://avd.aquasec.com/nvd/cve-2026-42309)\nsecurity-severity: 5.5\nPillow: Pillow: Denial of Service via specially crafted coordinate input\nPillow is a Python imaging library. From version 11.2.1 to before version 12.2.0, passing nested lists as coordinates to APIs that accept coordinates such as ImagePath.Path, ImageDraw.ImageDraw.polygon and ImageDraw.ImageDraw.line could cause a heap buffer overflow, as nested lists were recursively unpacked beyond the allocated buffer. Coordinate lists are now validated to contain exactly two numeric coordinates. This issue has been patched in version 12.2.0.\nVulnerability CVE-2026-42309\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42309](https://avd.aquasec.com/nvd/cve-2026-42309)\nPillow is a Python imaging library. From version 11.2.1 to before version 12.2.0, passing nested lists as coordinates to APIs that accept coordinates such as ImagePath.Path, ImageDraw.ImageDraw.polygon and ImageDraw.ImageDraw.line could cause a heap buffer overflow, as nested lists were recursively unpacked beyond the allocated buffer. Coordinate lists are now validated to contain exactly two numeric coordinates. This issue has been patched in version 12.2.0.",
-    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-42309, a medium-severity heap buffer overflow that can cause denial of service when nested lists are passed as coordinates to specific drawing APIs, and should be upgraded to version 12.2.0 or later.",
+    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-42309, a medium-severity heap buffer overflow that can cause denial of service when nested lists are passed as coordinates to specific APIs, and should be upgraded to version 12.2.0 or later.",
     "occurrences": 1
   },
   {
@@ -249,12 +249,12 @@
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42310\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42310](https://avd.aquasec.com/nvd/cve-2026-42310)\nsecurity-severity: 5.5\nPillow: Pillow: Denial of Service via malicious PDF processing\nPillow is a Python imaging library. From version 4.2.0 to before version 12.2.0, an attacker can supply a malicious PDF that causes the process to hang indefinitely, consuming 100% CPU and making the application unresponsive. This issue has been patched in version 12.2.0.\nVulnerability CVE-2026-42310\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42310](https://avd.aquasec.com/nvd/cve-2026-42310)\nPillow is a Python imaging library. From version 4.2.0 to before version 12.2.0, an attacker can supply a malicious PDF that causes the process to hang indefinitely, consuming 100% CPU and making the application unresponsive. This issue has been patched in version 12.2.0.",
-    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-42310, which allows an attacker to cause a Denial of Service by supplying a malicious PDF that hangs the process and consumes 100% CPU, a risk mitigated by upgrading to version 12.2.0.",
+    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-42310, which allows an attacker to cause a denial of service by supplying a malicious PDF that hangs the process and consumes 100% CPU, a risk mitigated by upgrading to version 12.2.0.",
     "occurrences": 1
   },
   {
     "id": "finding-024",
-    "title": "Pillow Command Injection via File Path",
+    "title": "Pillow Shell Command Injection Vulnerability",
     "severity": "WARNING",
     "file": "requirements.txt",
     "line": 19,
@@ -271,7 +271,7 @@
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59198\nSeverity: MEDIUM\nFixed Version: 12.3.0\nLink: [CVE-2026-59198](https://avd.aquasec.com/nvd/cve-2026-59198)\nsecurity-severity: 6.5\nPillow: Pillow: Information disclosure via TGA RLE encoder out-of-bounds read\nPillow is a Python imaging library. From 5.2.0 until 12.3.0, Pillow's TGA RLE encoder reads past its packed row buffer when saving a mode 1 image with TGA RLE compression, allowing adjacent process heap bytes to be copied into the generated TGA file. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59198\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59198](https://avd.aquasec.com/nvd/cve-2026-59198)\nPillow is a Python imaging library. From 5.2.0 until 12.3.0, Pillow's TGA RLE encoder reads past its packed row buffer when saving a mode 1 image with TGA RLE compression, allowing adjacent process heap bytes to be copied into the generated TGA file. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-59198, an out-of-bounds read in the TGA RLE encoder that can leak adjacent heap memory into generated TGA files, and should be upgraded to version 12.3.0 or later.",
+    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-59198, an out-of-bounds read in the TGA RLE encoder that can leak adjacent heap memory into generated TGA files, and should be upgraded to version 12.3.0.",
     "occurrences": 1
   },
   {
@@ -315,7 +315,7 @@
     "line": 30,
     "scanner": "trivy",
     "evidence": "Package: streamlit\nInstalled Version: 1.50.0\nVulnerability CVE-2026-10804\nSeverity: LOW\nFixed Version: 1.53.1\nLink: [CVE-2026-10804](https://avd.aquasec.com/nvd/cve-2026-10804)\nsecurity-severity: 3.6\nstreamlit: Streamlit: Weak hash usage leading to low integrity and availability impact\nA vulnerability has been found in Streamlit up to 1.53.0. Impacted is an unknown function in the library lib/streamlit/runtime/caching/hashing.py of the component Palette Handler. Such manipulation leads to use of weak hash. Local access is required to approach this attack. The attack requires a high level of complexity. The exploitability is considered difficult. The exploit has been disclosed to the public and may be used. The pull request to fix this issue awaits acceptance.\nVulnerability CVE-2026-10804\nSeverity: LOW\nPackage: streamlit\nFixed Version: 1.53.1\nLink: [CVE-2026-10804](https://avd.aquasec.com/nvd/cve-2026-10804)\nA vulnerability has been found in Streamlit up to 1.53.0. Impacted is an unknown function in the library lib/streamlit/runtime/caching/hashing.py of the component Palette Handler. Such manipulation leads to use of weak hash. Local access is required to approach this attack. The attack requires a high level of complexity. The exploitability is considered difficult. The exploit has been disclosed to the public and may be used. The pull request to fix this issue awaits acceptance.",
-    "reasoning": "The installed Streamlit version 1.50.0 is vulnerable to CVE-2026-10804, which involves weak hash usage in the caching module, but the risk is low due to the requirement for local access and high attack complexity.",
+    "reasoning": "The installed streamlit version 1.50.0 is vulnerable to CVE-2026-10804, which involves weak hash usage in the caching module, but the risk is low due to the requirement for local access and high attack complexity.",
     "occurrences": 1
   },
   {
@@ -326,7 +326,7 @@
     "line": 36,
     "scanner": "trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-44431\nSeverity: HIGH\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)\nsecurity-severity: 5.3\nurllib3: urllib3: Information disclosure via cross-origin redirects forwarding sensitive headers\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0.\nVulnerability CVE-2026-44431\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0.",
-    "reasoning": "The installed urllib3 version 2.6.3 is vulnerable to CVE-2026-44431, which allows sensitive headers to be forwarded during cross-origin redirects when using the low-level API with assert_same_host=False, risking information disclosure.",
+    "reasoning": "The installed urllib3 version 2.6.3 is vulnerable to CVE-2026-44431, which allows sensitive headers to be forwarded to different origins during cross-origin redirects when using the low-level API with assert_same_host=False, risking information disclosure.",
     "occurrences": 1
   },
   {
@@ -370,7 +370,7 @@
     "line": 36,
     "scanner": "trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-97688\nSeverity: MEDIUM\nFixed Version: 2.8.0\nLink: [CVE-2026-97688](https://avd.aquasec.com/nvd/cve-2026-97688)\nsecurity-severity: 5.5\nurllib3: urllib3: Denial of Service via infinite loop during chunked Deflate decoding\nurllib3 is an HTTP client library for Python. From 2.6.2 until 2.8.0, HTTPResponse.stream and HTTPResponse.read_chunked can enter an infinite loop because the Deflate decoder retains trailing bytes as unconsumed input after reaching end-of-stream and repeatedly decodes them without progress. The issue occurs when an untrusted server sends a chunked Deflate response whose decoded body exceeds a positive finite chunk size and whose encoded body has trailing bytes, specifically a response with Transfer-Encoding: chunked and Content-Encoding: deflate, content decoding enabled, and the positive finite amt=N streaming chunk size. The attack mechanism is that a malicious server returns a compressed chunked response with trailing bytes after the Deflate stream. The impact is excessive CPU usage and a request that does not complete, and network read timeouts do not interrupt the loop because no further socket read occurs. This issue is fixed in version 2.8.0.\nVulnerability CVE-2026-97688\nSeverity: MEDIUM\nPackage: urllib3\nFixed Version: 2.8.0\nLink: [CVE-2026-97688](https://avd.aquasec.com/nvd/cve-2026-97688)\nurllib3 is an HTTP client library for Python. From 2.6.2 until 2.8.0, HTTPResponse.stream and HTTPR",
-    "reasoning": "The installed urllib3 version 2.6.3 is vulnerable to CVE-2026-97688, a medium-severity denial of service caused by an infinite loop in the Deflate decoder when processing untrusted chunked responses with trailing bytes, which can be mitigated by upgrading to version 2.8.0.",
+    "reasoning": "The installed urllib3 version 2.6.3 is vulnerable to CVE-2026-97688, a medium-severity denial of service caused by an infinite loop in the Deflate decoder when processing chunked responses with trailing bytes, which can be triggered by a malicious server to exhaust CPU resources.",
     "occurrences": 1
   }
 ]
