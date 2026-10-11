@@ -122,155 +122,186 @@ def save_review_decision(finding_id, status, reviewer_note=""):
 
 # ── SIDEBAR ──────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.title("Risk Auditor")
-    st.caption("AI powered security monitoring, analysis and reporting")
-    st.divider()
+        st.title("Risk Auditor")
+        st.caption("AI powered security monitoring, analysis and reporting")
+        st.divider()
 
-    st.subheader("Repository")
-    repository = st.text_input(
-        "GitHub Repository",
-        placeholder="owner/repo-name",
-    )
+        st.subheader("Repository")
+        repository = st.text_input(
+            "GitHub Repository",
+            placeholder="owner/repo-name",
+        )
 
-    github_token = os.getenv("GITHUB_TOKEN", "")
+        github_token = os.getenv("GITHUB_TOKEN", "")
 
-    if st.button("▶ Scan repository", width="stretch"):
-        if not repository.strip():
-            st.error("Please enter a GitHub repository (e.g. owner/repo-name)")
-        elif not github_token:
-            st.error("GITHUB_TOKEN not found in .env")
-        else:
-            with st.spinner("Triggering GitHub Actions scan..."):
-                trigger_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/workflow.yml/dispatches"
-                trigger_response = requests.post(
-                    trigger_url,
+        if st.button("▶ Scan repository", width="stretch"):
+            if not repository.strip():
+                st.error("Please enter a GitHub repository (e.g. owner/repo-name)")
+            elif not github_token:
+                st.error("GITHUB_TOKEN not found in .env")
+            else:
+                # Step 1 — find the workflow ID dynamically
+                workflows_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows"
+                workflows_response = requests.get(
+                    workflows_url,
                     headers={
                         "Authorization": f"Bearer {github_token}",
                         "Accept": "application/vnd.github+json",
                     },
-                    json={"ref": "main"},
                     timeout=15,
                 )
 
-            if trigger_response.status_code == 204:
-                st.success("Scan triggered on GitHub Actions!")
-                st.info("Waiting for results... this may take 2-3 minutes.")
 
-                with st.spinner("Waiting for scan to complete..."):
-                    import time
-                    run_id = None
-                    time.sleep(5)
+                workflow_id = None
+                if workflows_response.status_code == 200:
+                    workflows = workflows_response.json().get("workflows", [])
+                    for w in workflows:
+                        if "workflow.yml" in w["path"] or "security-scan" in w["name"].lower():
+                            workflow_id = w["id"]
+                            break
 
-                    runs_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/workflow.yml/runs"
-                    runs_response = requests.get(
-                        runs_url,
-                        headers={
-                            "Authorization": f"Bearer {github_token}",
-                            "Accept": "application/vnd.github+json",
-                        },
-                        timeout=15,
-                    )
+                if not workflow_id:
+                    st.error("Could not find workflow in this repository. Make sure workflow.yml exists under .github/workflows/")
+                else:
+                    # Step 2 — trigger the workflow
+                    with st.status("Waiting for GitHub Actions scan...", expanded=False) as scan_status:
+                        trigger_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/{workflow_id}/dispatches"
+                        runs_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/{workflow_id}/runs"
+                        trigger_response = requests.post(
+                            trigger_url,
+                            headers={
+                                "Authorization": f"Bearer {github_token}",
+                                "Accept": "application/vnd.github+json",
+                            },
+                            json={"ref": "main"},
+                            timeout=15,
+                        )
 
-                    if runs_response.status_code == 200:
-                        runs = runs_response.json().get("workflow_runs", [])
-                        if runs:
-                            run_id = runs[0]["id"]
+                    if trigger_response.status_code == 204:
+                        scan_status.update(
+                            label="Scan finished. Downloading reports...",
+                            state="running",
+)
+                        st.info("Waiting for results... this may take 2-3 minutes.")
 
-                    if run_id:
-                        for _ in range(30):
-                            time.sleep(10)
-                            status_url = f"https://api.github.com/repos/{repository.strip()}/actions/runs/{run_id}"
-                            status_response = requests.get(
-                                status_url,
+                        with st.spinner("Waiting for scan to complete..."):
+                            import time
+                            run_id = None
+                            time.sleep(5)
+
+                            runs_response = requests.get(
+                                runs_url,
                                 headers={
                                     "Authorization": f"Bearer {github_token}",
                                     "Accept": "application/vnd.github+json",
                                 },
                                 timeout=15,
                             )
-                            status_data = status_response.json()
-                            run_status = status_data.get("status")
-                            conclusion = status_data.get("conclusion")
 
-                            if run_status == "completed":
-                                if conclusion in ("success", "failure"):
-                                    st.success("Scan complete! Downloading results...")
+                            if runs_response.status_code == 200:
+                                runs = runs_response.json().get("workflow_runs", [])
+                                if runs:
+                                    run_id = runs[0]["id"]
 
-                                    artifacts_url = f"https://api.github.com/repos/{repository.strip()}/actions/runs/{run_id}/artifacts"
-                                    artifacts_response = requests.get(
-                                        artifacts_url,
+                            if run_id:
+                                for _ in range(30):
+                                    time.sleep(10)
+                                    status_url = f"https://api.github.com/repos/{repository.strip()}/actions/runs/{run_id}"
+                                    status_response = requests.get(
+                                        status_url,
                                         headers={
                                             "Authorization": f"Bearer {github_token}",
                                             "Accept": "application/vnd.github+json",
                                         },
                                         timeout=15,
                                     )
+                                    status_data = status_response.json()
+                                    run_status = status_data.get("status")
+                                    conclusion = status_data.get("conclusion")
 
-                                    artifacts = artifacts_response.json().get("artifacts", [])
-                                    reports_dir = os.path.join(BACKEND_DIR, "..", "reports")
-                                    os.makedirs(reports_dir, exist_ok=True)
+                                    if run_status == "completed":
+                                        if conclusion in ("success", "failure"):
+                                            st.success("Scan complete! Downloading results...")
 
-                                    for artifact in artifacts:
-                                        download_url = artifact["archive_download_url"]
-                                        artifact_name = artifact["name"]
+                                            artifacts_url = f"https://api.github.com/repos/{repository.strip()}/actions/runs/{run_id}/artifacts"
+                                            artifacts_response = requests.get(
+                                                artifacts_url,
+                                                headers={
+                                                    "Authorization": f"Bearer {github_token}",
+                                                    "Accept": "application/vnd.github+json",
+                                                },
+                                                timeout=15,
+                                            )
 
-                                        dl = requests.get(
-                                            download_url,
-                                            headers={"Authorization": f"Bearer {github_token}"},
-                                            timeout=60,
-                                        )
+                                            artifacts = artifacts_response.json().get("artifacts", [])
+                                            reports_dir = os.path.join(BACKEND_DIR, "..", "reports")
+                                            os.makedirs(reports_dir, exist_ok=True)
 
-                                        zip_path = os.path.join(reports_dir, f"{artifact_name}.zip")
-                                        with open(zip_path, "wb") as zf:
-                                            zf.write(dl.content)
+                                            for artifact in artifacts:
+                                                download_url = artifact["archive_download_url"]
+                                                artifact_name = artifact["name"]
 
-                                        import zipfile
-                                        with zipfile.ZipFile(zip_path, "r") as z:
-                                            z.extractall(reports_dir)
-                                        os.remove(zip_path)
+                                                dl = requests.get(
+                                                    download_url,
+                                                    headers={"Authorization": f"Bearer {github_token}"},
+                                                    timeout=60,
+                                                )
 
-                                    st.success("Reports downloaded! Running AI analysis...")
+                                                zip_path = os.path.join(reports_dir, f"{artifact_name}.zip")
+                                                with open(zip_path, "wb") as zf:
+                                                    zf.write(dl.content)
 
-                                    result = subprocess.run(
-                                        [sys.executable, SCANNER_SCRIPT],
-                                        cwd=BACKEND_DIR,
-                                        capture_output=True,
-                                        text=True,
-                                        timeout=900,
-                                    )
+                                                import zipfile
+                                                with zipfile.ZipFile(zip_path, "r") as z:
+                                                    z.extractall(reports_dir)
+                                                os.remove(zip_path)
 
-                                    if result.returncode == 0:
-                                        response = requests.get(API_URL, timeout=10)
-                                        findings = response.json()
-                                        record = save_scan_history(findings)
-                                        st.session_state.last_scan = record["timestamp"]
-                                        st.success(f"Done! {len(findings)} findings loaded.")
-                                        st.rerun()
-                                    else:
-                                        st.error("AI analysis failed.")
-                                        st.code(result.stderr[-3000:])
-                                break
-                        else:
-                            st.warning("Scan still running — check back in a moment.")
+                                            scan_status.update(
+                                                label="Reports downloaded. Running AI analysis...",
+                                                state="running",
+                                            )
 
-            elif trigger_response.status_code == 404:
-                st.error("Repository or workflow not found. Check the repo name and that workflow.yml exists.")
-            elif trigger_response.status_code == 401:
-                st.error("Invalid GITHUB_TOKEN. Check your .env file.")
-            else:
-                st.error(f"Failed to trigger scan: {trigger_response.status_code}")
+                                            result = subprocess.run(
+                                                [sys.executable, SCANNER_SCRIPT],
+                                                cwd=BACKEND_DIR,
+                                                capture_output=True,
+                                                text=True,
+                                                timeout=900,
+                                            )
 
-    # Navigation — always visible, always outside the button block
-    st.divider()
-    st.subheader("Navigation")
-    page = st.radio(
-        "Choose a view",
-        ["Overview", "Security Findings", "Scan History"],
-        label_visibility="collapsed",
-    )
-    st.divider()
-    st.caption("Prototype • Local-first security analysis")
+                                            if result.returncode == 0:
+                                                response = requests.get(API_URL, timeout=10)
+                                                findings = response.json()
+                                                record = save_scan_history(findings)
+                                                st.session_state.last_scan = record["timestamp"]
+                                                st.success(f"Done! {len(findings)} findings loaded.")
+                                                st.rerun()
+                                            else:
+                                                st.error("AI analysis failed.")
+                                                st.code(result.stderr[-3000:])
+                                        break
+                                else:
+                                    st.warning("Scan still running — check back in a moment.")
 
+                    elif trigger_response.status_code == 404:
+                        st.error("Repository or workflow not found. Check the repo name and that workflow.yml exists.")
+                    elif trigger_response.status_code == 401:
+                        st.error("Invalid GITHUB_TOKEN. Check your .env file.")
+                    else:
+                        st.error(f"Failed to trigger scan: {trigger_response.status_code}")
+
+        # Navigation — always visible, always outside the button block
+        st.divider()
+        st.subheader("Navigation")
+        page = st.radio(
+            "Choose a view",
+            ["Overview", "Security Findings", "Scan History"],
+            label_visibility="collapsed",
+        )
+        st.divider()
+        st.caption("Prototype • Local-first security analysis")
+
+    
 
 # ── MAIN HEADER ───────────────────────────────────────────────────────────────
 st.title("Security Overview")
@@ -327,10 +358,10 @@ if page == "Overview":
     })
 
     severity_colors = {
-        "Critical": "#DC2626",
-        "High": "#EF4444",
-        "Medium": "#FACC15",
-        "Low": "#22C55E",
+        "Critical": "#F50303",
+        "High": "#DB1919",
+        "Medium": "#DE530D",
+        "Low": "#C5BA22",
     }
 
     fig = px.bar(
@@ -413,7 +444,7 @@ elif page == "Security Findings":
         selected = next(f for f in filtered if f["id"] == selected_id)
         severity = normalize_severity(selected["severity"])
 
-        severity_icons = {"Critical": "🔴", "High": "🟠", "Medium": "🟡", "Low": "🟢"}
+        severity_icons = {"Critical": "🔴", "High": "🔴", "Medium": "🟠", "Low": "🟡"}
 
         with st.container(border=True):
             st.markdown(f"### {selected['title']}")
