@@ -7,7 +7,21 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import sys
 from collections import Counter
-import ollama
+
+
+BANDIT_TITLES = {
+    "B101": "Assert Statement Used",
+    "B404": "Subprocess Module Imported",
+    "B403": "Potentially Unsafe Pickle Import",
+    "B307": "Use of eval()",
+    "B105": "Hardcoded Password String",
+    "B110": "Try-Except-Pass Detected",
+    "B603": "Subprocess Without Shell Execution",
+    "B607": "Partial Executable Path Used",
+    "B102": "Use of exec()",
+    "B605": "Process Started with a Shell",
+}
+
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(BASE, ".."))
@@ -312,15 +326,27 @@ def add_ai_titles(findings):
                 ],
             }
 
-            resp = ask_ai(prompt)
-            result = json.loads(resp)
-            title = (result.get("title") or "").strip()
+            scanner = example.get("scanner", "")
+            rule_id = key[1]
+
+            if scanner == "Bandit" and rule_id in BANDIT_TITLES:
+                title = BANDIT_TITLES[rule_id]
+            else:
+                resp = ask_ai(prompt).strip()
+
+                if resp.startswith("```"):
+                    resp = resp.split("\n", 1)[1]
+                    resp = resp.rsplit("```", 1)[0].strip()
+
+                result = json.loads(resp)
+                title = result["title"]
 
             if title:
                 for member in members:
                     member["title"] = title[:80]
 
         except Exception as e:
+            print("Raw Wrong AI resp onse:", repr(resp))
             print(f"Title generation failed for {key}: {e}")
 
     # Second: generate reasoning ONCE for each finding.
@@ -347,6 +373,7 @@ def add_ai_titles(findings):
         try:
             resp = ask_ai(prompt)
             result = json.loads(resp)
+            
             reasoning = (result.get("reasoning") or "").strip()
 
             if not reasoning:
