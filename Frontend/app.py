@@ -8,8 +8,10 @@ import subprocess
 import json
 import hashlib
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-st.set_page_config (page_title= "AI Cybersecurity Risk Auditor", layout= "wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="AI Cybersecurity Risk Auditor", layout="wide", initial_sidebar_state="expanded")
 
 API_URL = "http://127.0.0.1:5001/api/results"
 
@@ -37,11 +39,9 @@ HISTORY_FILE = os.path.join(BACKEND_DIR, "scan_history.json")
 def load_scan_history():
     if not os.path.exists(HISTORY_FILE):
         return []
-
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as file:
             history = json.load(file)
-
         return history if isinstance(history, list) else []
     except (json.JSONDecodeError, OSError):
         return []
@@ -51,7 +51,6 @@ def save_scan_history(findings):
     history = load_scan_history()
 
     def fingerprint(finding):
-        # Prefer the scanner's rule ID when available.
         identity = {
             "scanner": finding.get("scanner", ""),
             "rule": finding.get("_rule", ""),
@@ -62,17 +61,10 @@ def save_scan_history(findings):
         encoded = json.dumps(identity, sort_keys=True)
         return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
-    current = {
-        fingerprint(finding): finding
-        for finding in findings
-    }
-
+    current = {fingerprint(f): f for f in findings}
     previous = {}
     if history:
-        previous = {
-            fingerprint(finding): finding
-            for finding in history[-1].get("findings", [])
-        }
+        previous = {fingerprint(f): f for f in history[-1].get("findings", [])}
 
     new_ids = current.keys() - previous.keys()
     resolved_ids = previous.keys() - current.keys()
@@ -99,86 +91,154 @@ def save_scan_history(findings):
     return record
 
 
-
 if "scan_status" not in st.session_state:
     st.session_state.scan_status = "Not scanned"
 
 if "last_scan" not in st.session_state:
     st.session_state.last_scan = None
 
-   
 
-## Sidebar
+# ── SIDEBAR ──────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.title ("Risk Auditor")
+    st.title("Risk Auditor")
     st.caption("AI powered security monitoring, analysis and reporting")
     st.divider()
 
     st.subheader("Repository")
-    repository = st.text_input("Repository path", value= "", placeholder= "path/to/your/repository",)
+    repository = st.text_input(
+        "GitHub Repository",
+        placeholder="owner/repo-name",
+    )
+
+    github_token = os.getenv("GITHUB_TOKEN", "")
 
     if st.button("▶ Scan repository", width="stretch"):
         if not repository.strip():
-            st.error("Please enter a repository path before scanning.")
+            st.error("Please enter a GitHub repository (e.g. owner/repo-name)")
+        elif not github_token:
+            st.error("GITHUB_TOKEN not found in .env")
         else:
-            st.session_state.scan_status = "Scanning"
-
-        try:
-            with st.spinner(
-                "Processing security reports and generating AI analysis..."
-            ):
-                result = subprocess.run(
-                    [sys.executable, SCANNER_SCRIPT, repository.strip()],
-                    cwd=BACKEND_DIR,
-                    capture_output=True,
-                    text=True,
-                    timeout=900
+            with st.spinner("Triggering GitHub Actions scan..."):
+                trigger_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/workflow.yml/dispatches"
+                trigger_response = requests.post(
+                    trigger_url,
+                    headers={
+                        "Authorization": f"Bearer {github_token}",
+                        "Accept": "application/vnd.github+json",
+                    },
+                    json={"ref": "main"},
+                    timeout=15,
                 )
 
-            if result.returncode != 0:
-                st.session_state.scan_status = "Scan failed"
-                st.error("The scanner pipeline failed.")
+            if trigger_response.status_code == 204:
+                st.success("Scan triggered on GitHub Actions!")
+                st.info("Waiting for results... this may take 2-3 minutes.")
 
-                if result.stderr:
-                    st.code(result.stderr[-5000:])
+                with st.spinner("Waiting for scan to complete..."):
+                    import time
+                    run_id = None
+                    time.sleep(5)
 
+                    runs_url = f"https://api.github.com/repos/{repository.strip()}/actions/workflows/workflow.yml/runs"
+                    runs_response = requests.get(
+                        runs_url,
+                        headers={
+                            "Authorization": f"Bearer {github_token}",
+                            "Accept": "application/vnd.github+json",
+                        },
+                        timeout=15,
+                    )
+
+                    if runs_response.status_code == 200:
+                        runs = runs_response.json().get("workflow_runs", [])
+                        if runs:
+                            run_id = runs[0]["id"]
+
+                    if run_id:
+                        for _ in range(30):
+                            time.sleep(10)
+                            status_url = f"https://api.github.com/repos/{repository.strip()}/actions/runs/{run_id}"
+                            status_response = requests.get(
+                                status_url,
+                                headers={
+                                    "Authorization": f"Bearer {github_token}",
+                                    "Accept": "application/vnd.github+json",
+                                },
+                                timeout=15,
+                            )
+                            status_data = status_response.json()
+                            run_status = status_data.get("status")
+                            conclusion = status_data.get("conclusion")
+
+                            if run_status == "completed":
+                                if conclusion in ("success", "failure"):
+                                    st.success("Scan complete! Downloading results...")
+
+                                    artifacts_url = f"https://api.github.com/repos/{repository.strip()}/actions/runs/{run_id}/artifacts"
+                                    artifacts_response = requests.get(
+                                        artifacts_url,
+                                        headers={
+                                            "Authorization": f"Bearer {github_token}",
+                                            "Accept": "application/vnd.github+json",
+                                        },
+                                        timeout=15,
+                                    )
+
+                                    artifacts = artifacts_response.json().get("artifacts", [])
+                                    reports_dir = os.path.join(BACKEND_DIR, "..", "reports")
+                                    os.makedirs(reports_dir, exist_ok=True)
+
+                                    for artifact in artifacts:
+                                        download_url = artifact["archive_download_url"]
+                                        artifact_name = artifact["name"]
+
+                                        dl = requests.get(
+                                            download_url,
+                                            headers={"Authorization": f"Bearer {github_token}"},
+                                            timeout=60,
+                                        )
+
+                                        zip_path = os.path.join(reports_dir, f"{artifact_name}.zip")
+                                        with open(zip_path, "wb") as zf:
+                                            zf.write(dl.content)
+
+                                        import zipfile
+                                        with zipfile.ZipFile(zip_path, "r") as z:
+                                            z.extractall(reports_dir)
+                                        os.remove(zip_path)
+
+                                    st.success("Reports downloaded! Running AI analysis...")
+
+                                    result = subprocess.run(
+                                        [sys.executable, SCANNER_SCRIPT],
+                                        cwd=BACKEND_DIR,
+                                        capture_output=True,
+                                        text=True,
+                                        timeout=900,
+                                    )
+
+                                    if result.returncode == 0:
+                                        response = requests.get(API_URL, timeout=10)
+                                        findings = response.json()
+                                        record = save_scan_history(findings)
+                                        st.session_state.last_scan = record["timestamp"]
+                                        st.success(f"Done! {len(findings)} findings loaded.")
+                                        st.rerun()
+                                    else:
+                                        st.error("AI analysis failed.")
+                                        st.code(result.stderr[-3000:])
+                                break
+                        else:
+                            st.warning("Scan still running — check back in a moment.")
+
+            elif trigger_response.status_code == 404:
+                st.error("Repository or workflow not found. Check the repo name and that workflow.yml exists.")
+            elif trigger_response.status_code == 401:
+                st.error("Invalid GITHUB_TOKEN. Check your .env file.")
             else:
-                
-                # Fetch the newly generated findings from Flask
-                response = requests.get(API_URL, timeout=10)
-                response.raise_for_status()
-                findings = response.json()
+                st.error(f"Failed to trigger scan: {trigger_response.status_code}")
 
-                st.session_state.scan_status = "Complete"
-                record = save_scan_history(findings)
-
-                st.session_state.last_scan = record["timestamp"]
-
-                st.success(
-                    f"Pipeline complete! Loaded {len(findings)} findings."
-                )
-
-                st.write(
-                    f"New: {record['new_count']} · "
-                    f"Resolved: {record['resolved_count']} · "
-                    f"Unchanged: {record['unchanged_count']}"
-                )
-                
-                with st.expander("View pipeline logs"):
-                    st.text(result.stdout[-10000:] or "No output.")
-
-        except subprocess.TimeoutExpired:
-            st.session_state.scan_status = "Timed out"
-            st.error(
-                "The pipeline exceeded 15 minutes. "
-                "Check the backend terminal and Ollama."
-            )
-
-        except (requests.RequestException, ValueError) as e:
-            st.session_state.scan_status = "Error"
-            st.error(f"Could not reload findings: {e}")
-
-
+    # Navigation — always visible, always outside the button block
     st.divider()
     st.subheader("Navigation")
     page = st.radio(
@@ -189,20 +249,19 @@ with st.sidebar:
     st.divider()
     st.caption("Prototype • Local-first security analysis")
 
-## Main Header Bar
+
+# ── MAIN HEADER ───────────────────────────────────────────────────────────────
 st.title("Security Overview")
-st.write( "Monitor vulnerabilities, understand risk, analysize risks and prioritze remediation across codebase.")
+st.write("Monitor vulnerabilities, understand risk, analyze risks and prioritize remediation across codebase.")
 st.caption("Live findings from local analysis pipeline")
 
-## Summary Card
-
+# ── SUMMARY METRICS ───────────────────────────────────────────────────────────
 total = len(findings)
-critical = sum(f["severity"] == "Critical" for f in findings)
-high = sum(f["severity"] == "High" for f in findings)
-medium_low = sum(f["severity"] in ("Medium", "Low") for f in findings)
+critical = sum(f["severity"].lower().startswith("critical") for f in findings)
+high = sum(f["severity"].lower().startswith("high") for f in findings)
+medium_low = sum(f["severity"].lower().startswith(("medium", "low")) for f in findings)
 
 c1, c2, c3, c4 = st.columns(4)
-
 c1.metric("Total Findings", total)
 c2.metric("Critical", critical)
 c3.metric("High Risk", high)
@@ -210,43 +269,46 @@ c4.metric("Medium / Low", medium_low)
 
 st.divider()
 
-## Navigation
+
+# ── PAGES ─────────────────────────────────────────────────────────────────────
 if page == "Overview":
-    left, right = st.columns([3,2])
-    with left :
+    left, right = st.columns([3, 2])
+
+    with left:
         st.subheader("Most recent security findings")
         for finding in findings[:4]:
             with st.container(border=True):
-                col1, col2 = st.columns([4,1])
+                col1, col2 = st.columns([4, 1])
                 col1.markdown(f"**{finding['title']}**")
-                col1.caption(f"{finding['id']} . {finding['file']} . f{finding['scanner']}")
+                col1.caption(f"{finding['id']} · {finding['file']} · {finding['scanner']}")
                 col2.write(finding["severity"])
 
     with right:
         st.subheader("AI risk assessment")
-        with st.container(border=True):
-            st.markdown("Highest-priority Issue")
-            st.write("Hardcoded secret detected")
-            st.caption("sec-001 . Critical")
-            st.write("Demo recommendation : verify credentials are exposed, remove them from source code and rotate any compromised secrets.")
-            st.info("AI analysis sample content")
+        if findings:
+            top = findings[0]
+            with st.container(border=True):
+                st.markdown("**Highest-priority Issue**")
+                st.write(top["title"])
+                st.caption(f"{top['id']} · {top['severity']}")
+                st.write(top.get("reasoning", "No reasoning available."))
 
     st.subheader("Finding Distribution")
     distribution = pd.DataFrame({
-    "Severity": ["Critical", "High", "Medium", "Low"],
-    "Count": [
-        sum(f["severity"].lower().startswith("critical") for f in findings),
-        sum(f["severity"].lower().startswith("high") for f in findings),
-        sum(f["severity"].lower().startswith("medium") for f in findings),
-        sum(f["severity"].lower().startswith("low") for f in findings)
-    ]
-})
+        "Severity": ["Critical", "High", "Medium", "Low"],
+        "Count": [
+            sum(f["severity"].lower().startswith("critical") for f in findings),
+            sum(f["severity"].lower().startswith("high") for f in findings),
+            sum(f["severity"].lower().startswith("medium") for f in findings),
+            sum(f["severity"].lower().startswith("low") for f in findings),
+        ]
+    })
 
     severity_colors = {
         "Critical": "#DC2626",
         "High": "#EF4444",
         "Medium": "#FACC15",
-        "Low": "#22C55E"
+        "Low": "#22C55E",
     }
 
     fig = px.bar(
@@ -256,52 +318,36 @@ if page == "Overview":
         orientation="h",
         color="Severity",
         color_discrete_map=severity_colors,
-        category_orders={
-            "Severity": ["Critical", "High", "Medium", "Low"]
-        },
-    text="Count"
+        category_orders={"Severity": ["Critical", "High", "Medium", "Low"]},
+        text="Count",
     )
-
     fig.update_layout(
-    xaxis_title="Count",
-    yaxis_title="Severity",
-    showlegend=False,
-    template="plotly_dark",
-    yaxis={"categoryorder": "array",
-           "categoryarray": ["Low", "Medium", "High", "Critical"]},
-    margin=dict(l=20, r=20, t=20, b=20)
+        xaxis_title="Count",
+        yaxis_title="Severity",
+        showlegend=False,
+        template="plotly_dark",
+        yaxis={"categoryorder": "array", "categoryarray": ["Low", "Medium", "High", "Critical"]},
+        margin=dict(l=20, r=20, t=20, b=20),
     )
-
     fig.update_traces(textposition="outside")
-
     st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
-elif page == "Security Findings" :
+
+elif page == "Security Findings":
     st.subheader("All security findings")
     st.caption("Review, filter, and inspect detected security issues.")
-    severity_options = ["Critical", "High", "Medium", "Low"]
-    
-    def normalize_severity(value):
-        value = value.strip().upper().rstrip("!.,:")
-        return value.title()
 
+    def normalize_severity(value):
+        return value.strip().upper().rstrip("!.,:").title()
+
+    severity_options = ["Critical", "High", "Medium", "Low"]
     scanner_options = sorted({f["scanner"] for f in findings})
 
     col1, col2 = st.columns(2)
-
     with col1:
-        selected_severities = st.multiselect(
-            "Filter by severity",
-            severity_options,
-            default=severity_options
-        )
-
+        selected_severities = st.multiselect("Filter by severity", severity_options, default=severity_options)
     with col2:
-        selected_scanners = st.multiselect(
-            "Filter by scanner",
-            scanner_options,
-            default=scanner_options
-        )
+        selected_scanners = st.multiselect("Filter by scanner", scanner_options, default=scanner_options)
 
     filtered = [
         f for f in findings
@@ -319,46 +365,26 @@ elif page == "Security Findings" :
                 "File": f["file"],
                 "Line": f["line"],
                 "Scanner": f["scanner"],
-                "ID": f["id"]
+                "ID": f["id"],
             }
             for f in filtered
         ]
-
-        st.dataframe(
-            display_findings,
-            width="stretch",
-            hide_index=True
-        )
+        st.dataframe(display_findings, width="stretch", hide_index=True)
 
         selected_id = st.selectbox(
             "Inspect a finding",
             [f["id"] for f in filtered],
-            format_func=lambda finding_id: next(
-                f["title"] for f in filtered
-                if f["id"] == finding_id
-            )
+            format_func=lambda fid: next(f["title"] for f in filtered if f["id"] == fid),
         )
 
-        selected = next(
-            f for f in filtered if f["id"] == selected_id
-        )
-
+        selected = next(f for f in filtered if f["id"] == selected_id)
         severity = normalize_severity(selected["severity"])
 
-        severity_colors = {
-            "Critical": "🔴",
-            "High": "🟠",
-            "Medium": "🟡",
-            "Low": "🟢"
-        }
+        severity_icons = {"Critical": "🔴", "High": "🟠", "Medium": "🟡", "Low": "🟢"}
 
         with st.container(border=True):
             st.markdown(f"### {selected['title']}")
-
-            st.write(
-                f"**Severity:** {severity_colors.get(severity, '⚪')} "
-                f"{severity}"
-            )
+            st.write(f"**Severity:** {severity_icons.get(severity, '⚪')} {severity}")
             st.write(f"**Finding ID:** `{selected['id']}`")
             st.write(f"**File:** `{selected['file']}`")
             st.write(f"**Line:** {selected['line']}")
@@ -370,30 +396,33 @@ elif page == "Security Findings" :
             st.divider()
 
             st.write("**AI Risk Analysis**")
-            st.write(
-                selected.get(
-                "reasoning",
-                "No AI reasoning is available for this finding."
-            )
-        )
+            st.write(selected.get("reasoning", "No AI reasoning is available for this finding."))
+
+            if selected.get("owasp_category"):
+                st.divider()
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.write("**OWASP Category**")
+                    st.info(selected["owasp_category"])
+                with col2:
+                    st.write("**NIST Control**")
+                    st.info(selected.get("nist_control", "N/A"))
+
+            if selected.get("solution"):
+                st.write("**Recommended Solution**")
+                st.success(selected["solution"])
 
             if selected.get("occurrences") is not None:
-                st.write(
-                f"**Occurrences:** {selected['occurrences']}"
-            )
+                st.write(f"**Occurrences:** {selected['occurrences']}")
 
-            st.write("**Suggested Next Step — Sample Guidance**")
+            st.write("**Suggested Next Step**")
             if "shell" in selected["title"].lower():
                 st.write(
-                    "Avoid shell execution when possible. Prefer "
-                    "passing commands as argument lists, validate "
-                    "inputs, and review whether shell access is necessary."
+                    "Avoid shell execution when possible. Prefer passing commands as "
+                    "argument lists, validate inputs, and review whether shell access is necessary."
                 )
             else:
-                st.write(
-                    "Review the affected code, verify the finding, "
-                    "and apply an appropriate fix."
-                )
+                st.write("Review the affected code, verify the finding, and apply an appropriate fix.")
 
     else:
         st.success("No findings match your selected filters.")
@@ -408,7 +437,6 @@ elif page == "Scan History":
     if not history:
         st.info("No scan history yet. Run a scan from the sidebar to get started.")
     else:
-        # Summary table
         summary_rows = [
             {
                 "Scan ID": record.get("scan_id", "—"),
@@ -419,12 +447,10 @@ elif page == "Scan History":
                 "Resolved": record.get("resolved_count", 0),
                 "Unchanged": record.get("unchanged_count", 0),
             }
-            for record in reversed(history)  # newest first
+            for record in reversed(history)
         ]
-
         st.dataframe(summary_rows, width="stretch", hide_index=True)
 
-        # Trend chart
         if len(history) > 1:
             st.subheader("Risk Trend")
             trend_df = pd.DataFrame([
@@ -436,34 +462,25 @@ elif page == "Scan History":
                 }
                 for record in history
             ])
-
             fig = px.line(
                 trend_df,
                 x="Scan",
                 y=["Total", "New", "Resolved"],
                 markers=True,
                 template="plotly_dark",
-                color_discrete_map={
-                    "Total": "#60A5FA",
-                    "New": "#EF4444",
-                    "Resolved": "#22C55E"
-                }
+                color_discrete_map={"Total": "#60A5FA", "New": "#EF4444", "Resolved": "#22C55E"},
             )
             fig.update_layout(
                 xaxis_title="Scan",
                 yaxis_title="Findings",
-                margin=dict(l=20, r=20, t=20, b=20)
+                margin=dict(l=20, r=20, t=20, b=20),
             )
             st.plotly_chart(fig, width="stretch", config={"displayModeBar": False})
 
-        # Drill into a specific scan
         st.subheader("Inspect a Scan")
         scan_ids = [r.get("scan_id") for r in reversed(history)]
         selected_scan_id = st.selectbox("Select scan", scan_ids)
-
-        selected_record = next(
-            r for r in history if r.get("scan_id") == selected_scan_id
-        )
+        selected_record = next(r for r in history if r.get("scan_id") == selected_scan_id)
 
         col1, col2, col3 = st.columns(3)
         col1.metric("Total", selected_record.get("total_findings", 0))
@@ -479,3 +496,6 @@ elif page == "Scan History":
             with st.expander(f"✅ Resolved findings ({selected_record['resolved_count']})"):
                 for f in selected_record["resolved_findings"]:
                     st.write(f"**{f['title']}** — `{f['file']}` line {f['line']}")
+
+st.divider()
+st.caption("AI Cybersecurity Risk Auditor · Prototype")
