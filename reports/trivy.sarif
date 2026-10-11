@@ -1,0 +1,1552 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "fullName": "Trivy Vulnerability Scanner",
+          "informationUri": "https://github.com/aquasecurity/trivy",
+          "name": "Trivy",
+          "rules": [
+            {
+              "id": "CVE-2026-25990",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "pillow: Pillow: Out-of-bounds Write via Specially Crafted PSD Image"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. From 10.3.0 to before 12.1.1, an out-of-bounds write may be triggered when loading a specially crafted PSD image. This vulnerability is fixed in 12.1.1."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-25990",
+              "help": {
+                "text": "Vulnerability CVE-2026-25990\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.1.1\nLink: [CVE-2026-25990](https://avd.aquasec.com/nvd/cve-2026-25990)\nPillow is a Python imaging library. From 10.3.0 to before 12.1.1, an out-of-bounds write may be triggered when loading a specially crafted PSD image. This vulnerability is fixed in 12.1.1.",
+                "markdown": "**Vulnerability CVE-2026-25990**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.1.1|[CVE-2026-25990](https://avd.aquasec.com/nvd/cve-2026-25990)|\n\nPillow is a Python imaging library. From 10.3.0 to before 12.1.1, an out-of-bounds write may be triggered when loading a specially crafted PSD image. This vulnerability is fixed in 12.1.1."
+              },
+              "properties": {
+                "cvssv40_baseScore": 8.6,
+                "cvssv40_vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-40192",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Denial of Service via decompression bomb in FITS image processing"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-40192",
+              "help": {
+                "text": "Vulnerability CVE-2026-40192\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround.",
+                "markdown": "**Vulnerability CVE-2026-40192**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.2.0|[CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)|\n\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "cvssv40_baseScore": 8.7,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-42311",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: python-pillow: Pillow: Arbitrary code execution via malicious PSD file processing"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. From version 10.3.0 to before version 12.2.0, processing a malicious PSD file could lead to memory corruption, potentially resulting in a crash or arbitrary code execution. This issue has been patched in version 12.2.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-42311",
+              "help": {
+                "text": "Vulnerability CVE-2026-42311\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42311](https://avd.aquasec.com/nvd/cve-2026-42311)\nPillow is a Python imaging library. From version 10.3.0 to before version 12.2.0, processing a malicious PSD file could lead to memory corruption, potentially resulting in a crash or arbitrary code execution. This issue has been patched in version 12.2.0.",
+                "markdown": "**Vulnerability CVE-2026-42311**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.2.0|[CVE-2026-42311](https://avd.aquasec.com/nvd/cve-2026-42311)|\n\nPillow is a Python imaging library. From version 10.3.0 to before version 12.2.0, processing a malicious PSD file could lead to memory corruption, potentially resulting in a crash or arbitrary code execution. This issue has been patched in version 12.2.0."
+              },
+              "properties": {
+                "cvssv40_baseScore": 8.6,
+                "cvssv40_vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-54058",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Memory disclosure or denial of service via crafted McIdas AREA image"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, when Pillow loads an uncompressed McIdas AREA image from a filename through the mmap raw codec path, attacker-controlled header words can set a row stride smaller than the natural row width, causing pixel access such as Image.tobytes(), getpixel, convert, or save to read beyond the mapped region and disclose adjacent process memory or fault. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-54058",
+              "help": {
+                "text": "Vulnerability CVE-2026-54058\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54058](https://avd.aquasec.com/nvd/cve-2026-54058)\nPillow is a Python imaging library. Prior to 12.3.0, when Pillow loads an uncompressed McIdas AREA image from a filename through the mmap raw codec path, attacker-controlled header words can set a row stride smaller than the natural row width, causing pixel access such as Image.tobytes(), getpixel, convert, or save to read beyond the mapped region and disclose adjacent process memory or fault. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-54058**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-54058](https://avd.aquasec.com/nvd/cve-2026-54058)|\n\nPillow is a Python imaging library. Prior to 12.3.0, when Pillow loads an uncompressed McIdas AREA image from a filename through the mmap raw codec path, attacker-controlled header words can set a row stride smaller than the natural row width, causing pixel access such as Image.tobytes(), getpixel, convert, or save to read beyond the mapped region and disclose adjacent process memory or fault. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv40_baseScore": 8.3,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:N/VA:H/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-54059",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "python-pillow: Pillow: Denial of Service via crafted PCF font data"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-54059",
+              "help": {
+                "text": "Vulnerability CVE-2026-54059\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-54059**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)|\n\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-54060",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "python-pillow: Pillow: Denial of Service via excessive memory allocation when processing font files"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, PIL/FontFile.py FontFile.compile() assembled per-glyph images into a combined bitmap with Image.new(\"1\", (xsize, ysize)) without calling Image._decompression_bomb_check(), allowing a font to trigger excessive allocation during conversion or saving. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-54060",
+              "help": {
+                "text": "Vulnerability CVE-2026-54060\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54060](https://avd.aquasec.com/nvd/cve-2026-54060)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/FontFile.py FontFile.compile() assembled per-glyph images into a combined bitmap with Image.new(\"1\", (xsize, ysize)) without calling Image._decompression_bomb_check(), allowing a font to trigger excessive allocation during conversion or saving. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-54060**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-54060](https://avd.aquasec.com/nvd/cve-2026-54060)|\n\nPillow is a Python imaging library. Prior to 12.3.0, PIL/FontFile.py FontFile.compile() assembled per-glyph images into a combined bitmap with Image.new(\"1\", (xsize, ysize)) without calling Image._decompression_bomb_check(), allowing a font to trigger excessive allocation during conversion or saving. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-55379",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "python-pillow: Pillow: Denial of Service via crafted BDF font file"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, PIL/BdfFontFile.py bdf_char() read the BBX width and height field from a BDF font file and passed attacker-controlled dimensions to Image.new() without calling Image._decompression_bomb_check(), bypassing Pillow's documented decompression bomb protection and allowing excessive memory allocation. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-55379",
+              "help": {
+                "text": "Vulnerability CVE-2026-55379\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-55379](https://avd.aquasec.com/nvd/cve-2026-55379)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/BdfFontFile.py bdf_char() read the BBX width and height field from a BDF font file and passed attacker-controlled dimensions to Image.new() without calling Image._decompression_bomb_check(), bypassing Pillow's documented decompression bomb protection and allowing excessive memory allocation. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-55379**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-55379](https://avd.aquasec.com/nvd/cve-2026-55379)|\n\nPillow is a Python imaging library. Prior to 12.3.0, PIL/BdfFontFile.py bdf_char() read the BBX width and height field from a BDF font file and passed attacker-controlled dimensions to Image.new() without calling Image._decompression_bomb_check(), bypassing Pillow's documented decompression bomb protection and allowing excessive memory allocation. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-55380",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "python-pillow: Pillow: Denial of Service via crafted GD 2.x image file"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, PIL/GdImageFile.py GdImageFile._open() read image dimensions from the GD 2.x header and stored them in self._size without calling Image._decompression_bomb_check(), allowing a crafted .gd file to trigger excessive C-heap allocation when loaded. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-55380",
+              "help": {
+                "text": "Vulnerability CVE-2026-55380\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-55380](https://avd.aquasec.com/nvd/cve-2026-55380)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/GdImageFile.py GdImageFile._open() read image dimensions from the GD 2.x header and stored them in self._size without calling Image._decompression_bomb_check(), allowing a crafted .gd file to trigger excessive C-heap allocation when loaded. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-55380**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-55380](https://avd.aquasec.com/nvd/cve-2026-55380)|\n\nPillow is a Python imaging library. Prior to 12.3.0, PIL/GdImageFile.py GdImageFile._open() read image dimensions from the GD 2.x header and stored them in self._size without calling Image._decompression_bomb_check(), allowing a crafted .gd file to trigger excessive C-heap allocation when loaded. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-59197",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Native heap out-of-bounds write"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, Pillow's public rank-filter API can trigger a native heap out-of-bounds write when given a very large odd filter size because ImageFilter.RankFilter.filter() calls image.expand(size // 2, size // 2) before rank-filter size validation and ImagingExpand() computes output dimensions with unchecked signed int arithmetic. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-59197",
+              "help": {
+                "text": "Vulnerability CVE-2026-59197\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59197](https://avd.aquasec.com/nvd/cve-2026-59197)\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's public rank-filter API can trigger a native heap out-of-bounds write when given a very large odd filter size because ImageFilter.RankFilter.filter() calls image.expand(size // 2, size // 2) before rank-filter size validation and ImagingExpand() computes output dimensions with unchecked signed int arithmetic. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-59197**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-59197](https://avd.aquasec.com/nvd/cve-2026-59197)|\n\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's public rank-filter API can trigger a native heap out-of-bounds write when given a very large odd filter size because ImageFilter.RankFilter.filter() calls image.expand(size // 2, size // 2) before rank-filter size validation and ImagingExpand() computes output dimensions with unchecked signed int arithmetic. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 8.2,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:H",
+                "precision": "very-high",
+                "security-severity": "8.2",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-59199",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Denial of Service via out-of-bounds write in image processing"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, Pillow public image coordinate APIs can trigger a native heap out-of-bounds write when given coordinates near the signed 32-bit integer limits in Image.paste(), Image.crop(), or Image.alpha_composite(). This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-59199",
+              "help": {
+                "text": "Vulnerability CVE-2026-59199\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59199](https://avd.aquasec.com/nvd/cve-2026-59199)\nPillow is a Python imaging library. Prior to 12.3.0, Pillow public image coordinate APIs can trigger a native heap out-of-bounds write when given coordinates near the signed 32-bit integer limits in Image.paste(), Image.crop(), or Image.alpha_composite(). This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-59199**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-59199](https://avd.aquasec.com/nvd/cve-2026-59199)|\n\nPillow is a Python imaging library. Prior to 12.3.0, Pillow public image coordinate APIs can trigger a native heap out-of-bounds write when given coordinates near the signed 32-bit integer limits in Image.paste(), Image.crop(), or Image.alpha_composite(). This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-59200",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Denial of service via crafted PDF stream"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. From 5.1.0 until 12.3.0, PdfParser.PdfStream.decode() in PIL/PdfParser.py calls zlib.decompress() with bufsize set to the PDF stream Length field without bounding the decompressed output size, allowing a crafted FlateDecode PDF stream to exhaust memory from a small file. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-59200",
+              "help": {
+                "text": "Vulnerability CVE-2026-59200\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59200](https://avd.aquasec.com/nvd/cve-2026-59200)\nPillow is a Python imaging library. From 5.1.0 until 12.3.0, PdfParser.PdfStream.decode() in PIL/PdfParser.py calls zlib.decompress() with bufsize set to the PDF stream Length field without bounding the decompressed output size, allowing a crafted FlateDecode PDF stream to exhaust memory from a small file. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-59200**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-59200](https://avd.aquasec.com/nvd/cve-2026-59200)|\n\nPillow is a Python imaging library. From 5.1.0 until 12.3.0, PdfParser.PdfStream.decode() in PIL/PdfParser.py calls zlib.decompress() with bufsize set to the PDF stream Length field without bounding the decompressed output size, allowing a crafted FlateDecode PDF stream to exhaust memory from a small file. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-59204",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Denial of Service via crafted JPEG2000 image"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. From 8.2.0 through 12.2.0, src/libImaging/Jpeg2KDecode.c accumulates total_component_width across every tile in a JPEG2000 image instead of recomputing it per tile, allowing a crafted tiled JPEG2000 file to force substantially higher transient memory usage and trigger out-of-memory failures during decoding. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-59204",
+              "help": {
+                "text": "Vulnerability CVE-2026-59204\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59204](https://avd.aquasec.com/nvd/cve-2026-59204)\nPillow is a Python imaging library. From 8.2.0 through 12.2.0, src/libImaging/Jpeg2KDecode.c accumulates total_component_width across every tile in a JPEG2000 image instead of recomputing it per tile, allowing a crafted tiled JPEG2000 file to force substantially higher transient memory usage and trigger out-of-memory failures during decoding. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-59204**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-59204](https://avd.aquasec.com/nvd/cve-2026-59204)|\n\nPillow is a Python imaging library. From 8.2.0 through 12.2.0, src/libImaging/Jpeg2KDecode.c accumulates total_component_width across every tile in a JPEG2000 image instead of recomputing it per tile, allowing a crafted tiled JPEG2000 file to force substantially higher transient memory usage and trigger out-of-memory failures during decoding. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv40_baseScore": 8.7,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-59205",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Controlled native heap corruption in ImageCms.ImageCmsTransform.apply API"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, Pillow's ImageCms.ImageCmsTransform.apply(im, imOut) API can trigger controlled native heap corruption when the caller supplies an output image whose mode does not match the transform's declared output mode. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-59205",
+              "help": {
+                "text": "Vulnerability CVE-2026-59205\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59205](https://avd.aquasec.com/nvd/cve-2026-59205)\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's ImageCms.ImageCmsTransform.apply(im, imOut) API can trigger controlled native heap corruption when the caller supplies an output image whose mode does not match the transform's declared output mode. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-59205**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pillow|12.3.0|[CVE-2026-59205](https://avd.aquasec.com/nvd/cve-2026-59205)|\n\nPillow is a Python imaging library. Prior to 12.3.0, Pillow's ImageCms.ImageCmsTransform.apply(im, imOut) API can trigger controlled native heap corruption when the caller supplies an output image whose mode does not match the transform's declared output mode. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-42308",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Denial of Service via integer overflow in font processing"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to version 12.2.0, if a font advances for each glyph by an exceeding large amount, when Pillow keeps track of the current position, it may lead to an integer overflow. This issue has been patched in version 12.2.0."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-42308",
+              "help": {
+                "text": "Vulnerability CVE-2026-42308\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42308](https://avd.aquasec.com/nvd/cve-2026-42308)\nPillow is a Python imaging library. Prior to version 12.2.0, if a font advances for each glyph by an exceeding large amount, when Pillow keeps track of the current position, it may lead to an integer overflow. This issue has been patched in version 12.2.0.",
+                "markdown": "**Vulnerability CVE-2026-42308**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|pillow|12.2.0|[CVE-2026-42308](https://avd.aquasec.com/nvd/cve-2026-42308)|\n\nPillow is a Python imaging library. Prior to version 12.2.0, if a font advances for each glyph by an exceeding large amount, when Pillow keeps track of the current position, it may lead to an integer overflow. This issue has been patched in version 12.2.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 5.5,
+                "cvssv3_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+                "cvssv40_baseScore": 5.1,
+                "cvssv40_vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "5.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-42309",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Denial of Service via specially crafted coordinate input"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. From version 11.2.1 to before version 12.2.0, passing nested lists as coordinates to APIs that accept coordinates such as ImagePath.Path, ImageDraw.ImageDraw.polygon and ImageDraw.ImageDraw.line could cause a heap buffer overflow, as nested lists were recursively unpacked beyond the allocated buffer. Coordinate lists are now validated to contain exactly two numeric coordinates. This issue has been patched in version 12.2.0."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-42309",
+              "help": {
+                "text": "Vulnerability CVE-2026-42309\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42309](https://avd.aquasec.com/nvd/cve-2026-42309)\nPillow is a Python imaging library. From version 11.2.1 to before version 12.2.0, passing nested lists as coordinates to APIs that accept coordinates such as ImagePath.Path, ImageDraw.ImageDraw.polygon and ImageDraw.ImageDraw.line could cause a heap buffer overflow, as nested lists were recursively unpacked beyond the allocated buffer. Coordinate lists are now validated to contain exactly two numeric coordinates. This issue has been patched in version 12.2.0.",
+                "markdown": "**Vulnerability CVE-2026-42309**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|pillow|12.2.0|[CVE-2026-42309](https://avd.aquasec.com/nvd/cve-2026-42309)|\n\nPillow is a Python imaging library. From version 11.2.1 to before version 12.2.0, passing nested lists as coordinates to APIs that accept coordinates such as ImagePath.Path, ImageDraw.ImageDraw.polygon and ImageDraw.ImageDraw.line could cause a heap buffer overflow, as nested lists were recursively unpacked beyond the allocated buffer. Coordinate lists are now validated to contain exactly two numeric coordinates. This issue has been patched in version 12.2.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 5.5,
+                "cvssv3_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+                "cvssv40_baseScore": 5.1,
+                "cvssv40_vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "5.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-42310",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Denial of Service via malicious PDF processing"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. From version 4.2.0 to before version 12.2.0, an attacker can supply a malicious PDF that causes the process to hang indefinitely, consuming 100% CPU and making the application unresponsive. This issue has been patched in version 12.2.0."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-42310",
+              "help": {
+                "text": "Vulnerability CVE-2026-42310\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-42310](https://avd.aquasec.com/nvd/cve-2026-42310)\nPillow is a Python imaging library. From version 4.2.0 to before version 12.2.0, an attacker can supply a malicious PDF that causes the process to hang indefinitely, consuming 100% CPU and making the application unresponsive. This issue has been patched in version 12.2.0.",
+                "markdown": "**Vulnerability CVE-2026-42310**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|pillow|12.2.0|[CVE-2026-42310](https://avd.aquasec.com/nvd/cve-2026-42310)|\n\nPillow is a Python imaging library. From version 4.2.0 to before version 12.2.0, an attacker can supply a malicious PDF that causes the process to hang indefinitely, consuming 100% CPU and making the application unresponsive. This issue has been patched in version 12.2.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 5.5,
+                "cvssv3_vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H",
+                "cvssv40_baseScore": 5.1,
+                "cvssv40_vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "5.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-55798",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "python-pillow: Pillow: Arbitrary command injection via shell metacharacters in file paths"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. Prior to 12.3.0, WindowsViewer.get_command() constructed a cmd.exe shell command by directly embedding a file path into an f-string without escaping and passed the result to subprocess.Popen(..., shell=True), allowing shell metacharacters in the file path to inject arbitrary cmd.exe commands. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-55798",
+              "help": {
+                "text": "Vulnerability CVE-2026-55798\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-55798](https://avd.aquasec.com/nvd/cve-2026-55798)\nPillow is a Python imaging library. Prior to 12.3.0, WindowsViewer.get_command() constructed a cmd.exe shell command by directly embedding a file path into an f-string without escaping and passed the result to subprocess.Popen(..., shell=True), allowing shell metacharacters in the file path to inject arbitrary cmd.exe commands. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-55798**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|pillow|12.3.0|[CVE-2026-55798](https://avd.aquasec.com/nvd/cve-2026-55798)|\n\nPillow is a Python imaging library. Prior to 12.3.0, WindowsViewer.get_command() constructed a cmd.exe shell command by directly embedding a file path into an f-string without escaping and passed the result to subprocess.Popen(..., shell=True), allowing shell metacharacters in the file path to inject arbitrary cmd.exe commands. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 4.5,
+                "cvssv3_vector": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L",
+                "precision": "very-high",
+                "security-severity": "4.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-59198",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Pillow: Pillow: Information disclosure via TGA RLE encoder out-of-bounds read"
+              },
+              "fullDescription": {
+                "text": "Pillow is a Python imaging library. From 5.2.0 until 12.3.0, Pillow's TGA RLE encoder reads past its packed row buffer when saving a mode 1 image with TGA RLE compression, allowing adjacent process heap bytes to be copied into the generated TGA file. This issue is fixed in version 12.3.0."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-59198",
+              "help": {
+                "text": "Vulnerability CVE-2026-59198\nSeverity: MEDIUM\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59198](https://avd.aquasec.com/nvd/cve-2026-59198)\nPillow is a Python imaging library. From 5.2.0 until 12.3.0, Pillow's TGA RLE encoder reads past its packed row buffer when saving a mode 1 image with TGA RLE compression, allowing adjacent process heap bytes to be copied into the generated TGA file. This issue is fixed in version 12.3.0.",
+                "markdown": "**Vulnerability CVE-2026-59198**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|pillow|12.3.0|[CVE-2026-59198](https://avd.aquasec.com/nvd/cve-2026-59198)|\n\nPillow is a Python imaging library. From 5.2.0 until 12.3.0, Pillow's TGA RLE encoder reads past its packed row buffer when saving a mode 1 image with TGA RLE compression, allowing adjacent process heap bytes to be copied into the generated TGA file. This issue is fixed in version 12.3.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 6.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:L",
+                "precision": "very-high",
+                "security-severity": "6.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-25087",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "apache-arrow: Apache Arrow C++: Denial of Service via Use After Free vulnerability when reading IPC files"
+              },
+              "fullDescription": {
+                "text": "Use After Free vulnerability in Apache Arrow C++.\n\nThis issue affects Apache Arrow C++ from 15.0.0 through 23.0.0. It can be triggered when reading an Arrow IPC file (but not an IPC stream) with pre-buffering enabled, if the IPC file contains data with variadic buffers (such as Binary View and String View data). Depending on the number of variadic buffers in a record batch column and on the temporal sequence of multi-threaded IO, a write to a dangling pointer could occur. The value (a `std::shared_ptr\u003cBuffer\u003e` object) that is written to the dangling pointer is not under direct control of the attacker.\n\nPre-buffering is disabled by default but can be enabled using a specific C++ API call (`RecordBatchFileReader::PreBufferMetadata`). The functionality is not exposed in language bindings (Python, Ruby, C GLib), so these bindings are not vulnerable.\n\nThe most likely consequence of this issue would be random crashes or memory corruption when reading specific kinds of IPC files. If the application allows ingesting IPC files from untrusted sources, this could plausibly be exploited for denial of service. Inducing more targeted kinds of misbehavior (such as confidential data extraction from the running process) depends on memory allocation and multi-threaded IO temporal patterns that are unlikely to be easily controlled by an attacker.\n\nAdvice for users of Arrow C++:\n\n1. check whether you enable pre-buffering on the IPC file reader (using `RecordBatchFileReader::PreBufferMetadata`)\n\n2. if so, either disable pre-buffering (which may have adverse performance consequences), or switch to Arrow 23.0.1 which is not vulnerable"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-25087",
+              "help": {
+                "text": "Vulnerability CVE-2026-25087\nSeverity: HIGH\nPackage: pyarrow\nFixed Version: 23.0.1\nLink: [CVE-2026-25087](https://avd.aquasec.com/nvd/cve-2026-25087)\nUse After Free vulnerability in Apache Arrow C++.\n\nThis issue affects Apache Arrow C++ from 15.0.0 through 23.0.0. It can be triggered when reading an Arrow IPC file (but not an IPC stream) with pre-buffering enabled, if the IPC file contains data with variadic buffers (such as Binary View and String View data). Depending on the number of variadic buffers in a record batch column and on the temporal sequence of multi-threaded IO, a write to a dangling pointer could occur. The value (a `std::shared_ptr\u003cBuffer\u003e` object) that is written to the dangling pointer is not under direct control of the attacker.\n\nPre-buffering is disabled by default but can be enabled using a specific C++ API call (`RecordBatchFileReader::PreBufferMetadata`). The functionality is not exposed in language bindings (Python, Ruby, C GLib), so these bindings are not vulnerable.\n\nThe most likely consequence of this issue would be random crashes or memory corruption when reading specific kinds of IPC files. If the application allows ingesting IPC files from untrusted sources, this could plausibly be exploited for denial of service. Inducing more targeted kinds of misbehavior (such as confidential data extraction from the running process) depends on memory allocation and multi-threaded IO temporal patterns that are unlikely to be easily controlled by an attacker.\n\nAdvice for users of Arrow C++:\n\n1. check whether you enable pre-buffering on the IPC file reader (using `RecordBatchFileReader::PreBufferMetadata`)\n\n2. if so, either disable pre-buffering (which may have adverse performance consequences), or switch to Arrow 23.0.1 which is not vulnerable",
+                "markdown": "**Vulnerability CVE-2026-25087**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|pyarrow|23.0.1|[CVE-2026-25087](https://avd.aquasec.com/nvd/cve-2026-25087)|\n\nUse After Free vulnerability in Apache Arrow C++.\n\nThis issue affects Apache Arrow C++ from 15.0.0 through 23.0.0. It can be triggered when reading an Arrow IPC file (but not an IPC stream) with pre-buffering enabled, if the IPC file contains data with variadic buffers (such as Binary View and String View data). Depending on the number of variadic buffers in a record batch column and on the temporal sequence of multi-threaded IO, a write to a dangling pointer could occur. The value (a `std::shared_ptr\u003cBuffer\u003e` object) that is written to the dangling pointer is not under direct control of the attacker.\n\nPre-buffering is disabled by default but can be enabled using a specific C++ API call (`RecordBatchFileReader::PreBufferMetadata`). The functionality is not exposed in language bindings (Python, Ruby, C GLib), so these bindings are not vulnerable.\n\nThe most likely consequence of this issue would be random crashes or memory corruption when reading specific kinds of IPC files. If the application allows ingesting IPC files from untrusted sources, this could plausibly be exploited for denial of service. Inducing more targeted kinds of misbehavior (such as confidential data extraction from the running process) depends on memory allocation and multi-threaded IO temporal patterns that are unlikely to be easily controlled by an attacker.\n\nAdvice for users of Arrow C++:\n\n1. check whether you enable pre-buffering on the IPC file reader (using `RecordBatchFileReader::PreBufferMetadata`)\n\n2. if so, either disable pre-buffering (which may have adverse performance consequences), or switch to Arrow 23.0.1 which is not vulnerable"
+              },
+              "properties": {
+                "cvssv3_baseScore": 7,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:H",
+                "precision": "very-high",
+                "security-severity": "7.0",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-25645",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "requests: Requests: Security bypass due to predictable temporary file creation"
+              },
+              "fullDescription": {
+                "text": "Requests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility function uses a predictable filename when extracting files from zip archives into the system temporary directory. If the target file already exists, it is reused without validation. A local attacker with write access to the temp directory could pre-create a malicious file that would be loaded in place of the legitimate one. Standard usage of the Requests library is not affected by this vulnerability. Only applications that call `extract_zipped_paths()` directly are impacted. Starting in version 2.33.0, the library extracts files to a non-deterministic location. If developers are unable to upgrade, they can set `TMPDIR` in their environment to a directory with restricted write access."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-25645",
+              "help": {
+                "text": "Vulnerability CVE-2026-25645\nSeverity: MEDIUM\nPackage: requests\nFixed Version: 2.33.0\nLink: [CVE-2026-25645](https://avd.aquasec.com/nvd/cve-2026-25645)\nRequests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility function uses a predictable filename when extracting files from zip archives into the system temporary directory. If the target file already exists, it is reused without validation. A local attacker with write access to the temp directory could pre-create a malicious file that would be loaded in place of the legitimate one. Standard usage of the Requests library is not affected by this vulnerability. Only applications that call `extract_zipped_paths()` directly are impacted. Starting in version 2.33.0, the library extracts files to a non-deterministic location. If developers are unable to upgrade, they can set `TMPDIR` in their environment to a directory with restricted write access.",
+                "markdown": "**Vulnerability CVE-2026-25645**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|requests|2.33.0|[CVE-2026-25645](https://avd.aquasec.com/nvd/cve-2026-25645)|\n\nRequests is a HTTP library. Prior to version 2.33.0, the `requests.utils.extract_zipped_paths()` utility function uses a predictable filename when extracting files from zip archives into the system temporary directory. If the target file already exists, it is reused without validation. A local attacker with write access to the temp directory could pre-create a malicious file that would be loaded in place of the legitimate one. Standard usage of the Requests library is not affected by this vulnerability. Only applications that call `extract_zipped_paths()` directly are impacted. Starting in version 2.33.0, the library extracts files to a non-deterministic location. If developers are unable to upgrade, they can set `TMPDIR` in their environment to a directory with restricted write access."
+              },
+              "properties": {
+                "cvssv3_baseScore": 4.4,
+                "cvssv3_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:N/I:H/A:N",
+                "precision": "very-high",
+                "security-severity": "4.4",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-33682",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "Unauthenticated SSRF Vulnerability in Streamlit on Windows (NTLM Credential Exposure)"
+              },
+              "fullDescription": {
+                "text": "Streamlit is a data oriented application development framework for python. Streamlit Open Source versions prior to 1.54.0 running on Windows hosts have an unauthenticated Server-Side Request Forgery (SSRF) vulnerability. The vulnerability arises from improper validation of attacker-supplied filesystem paths. In certain code paths, including within the `ComponentRequestHandler`, filesystem paths are resolved using `os.path.realpath()` or `Path.resolve()` before sufficient validation occurs. On Windows systems, supplying a malicious UNC path (e.g., `\\\\attacker-controlled-host\\share`) can cause the Streamlit server to initiate outbound SMB connections over port 445. When Windows attempts to authenticate to the remote SMB server, NTLMv2 challenge-response credentials of the Windows user running the Streamlit process may be transmitted. This behavior may allow an attacker to perform NTLM relay attacks against other internal services and/or identify internally reachable SMB hosts via timing analysis. The vulnerability has been fixed in Streamlit Open Source version 1.54.0."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-33682",
+              "help": {
+                "text": "Vulnerability CVE-2026-33682\nSeverity: MEDIUM\nPackage: streamlit\nFixed Version: 1.54.0\nLink: [CVE-2026-33682](https://avd.aquasec.com/nvd/cve-2026-33682)\nStreamlit is a data oriented application development framework for python. Streamlit Open Source versions prior to 1.54.0 running on Windows hosts have an unauthenticated Server-Side Request Forgery (SSRF) vulnerability. The vulnerability arises from improper validation of attacker-supplied filesystem paths. In certain code paths, including within the `ComponentRequestHandler`, filesystem paths are resolved using `os.path.realpath()` or `Path.resolve()` before sufficient validation occurs. On Windows systems, supplying a malicious UNC path (e.g., `\\\\attacker-controlled-host\\share`) can cause the Streamlit server to initiate outbound SMB connections over port 445. When Windows attempts to authenticate to the remote SMB server, NTLMv2 challenge-response credentials of the Windows user running the Streamlit process may be transmitted. This behavior may allow an attacker to perform NTLM relay attacks against other internal services and/or identify internally reachable SMB hosts via timing analysis. The vulnerability has been fixed in Streamlit Open Source version 1.54.0.",
+                "markdown": "**Vulnerability CVE-2026-33682**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|streamlit|1.54.0|[CVE-2026-33682](https://avd.aquasec.com/nvd/cve-2026-33682)|\n\nStreamlit is a data oriented application development framework for python. Streamlit Open Source versions prior to 1.54.0 running on Windows hosts have an unauthenticated Server-Side Request Forgery (SSRF) vulnerability. The vulnerability arises from improper validation of attacker-supplied filesystem paths. In certain code paths, including within the `ComponentRequestHandler`, filesystem paths are resolved using `os.path.realpath()` or `Path.resolve()` before sufficient validation occurs. On Windows systems, supplying a malicious UNC path (e.g., `\\\\attacker-controlled-host\\share`) can cause the Streamlit server to initiate outbound SMB connections over port 445. When Windows attempts to authenticate to the remote SMB server, NTLMv2 challenge-response credentials of the Windows user running the Streamlit process may be transmitted. This behavior may allow an attacker to perform NTLM relay attacks against other internal services and/or identify internally reachable SMB hosts via timing analysis. The vulnerability has been fixed in Streamlit Open Source version 1.54.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 4.7,
+                "cvssv3_vector": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:C/C:L/I:L/A:N",
+                "precision": "very-high",
+                "security-severity": "4.7",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-10804",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "streamlit: Streamlit: Weak hash usage leading to low integrity and availability impact"
+              },
+              "fullDescription": {
+                "text": "A vulnerability has been found in Streamlit up to 1.53.0. Impacted is an unknown function in the library lib/streamlit/runtime/caching/hashing.py of the component Palette Handler. Such manipulation leads to use of weak hash. Local access is required to approach this attack. The attack requires a high level of complexity. The exploitability is considered difficult. The exploit has been disclosed to the public and may be used. The pull request to fix this issue awaits acceptance."
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-10804",
+              "help": {
+                "text": "Vulnerability CVE-2026-10804\nSeverity: LOW\nPackage: streamlit\nFixed Version: 1.53.1\nLink: [CVE-2026-10804](https://avd.aquasec.com/nvd/cve-2026-10804)\nA vulnerability has been found in Streamlit up to 1.53.0. Impacted is an unknown function in the library lib/streamlit/runtime/caching/hashing.py of the component Palette Handler. Such manipulation leads to use of weak hash. Local access is required to approach this attack. The attack requires a high level of complexity. The exploitability is considered difficult. The exploit has been disclosed to the public and may be used. The pull request to fix this issue awaits acceptance.",
+                "markdown": "**Vulnerability CVE-2026-10804**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|LOW|streamlit|1.53.1|[CVE-2026-10804](https://avd.aquasec.com/nvd/cve-2026-10804)|\n\nA vulnerability has been found in Streamlit up to 1.53.0. Impacted is an unknown function in the library lib/streamlit/runtime/caching/hashing.py of the component Palette Handler. Such manipulation leads to use of weak hash. Local access is required to approach this attack. The attack requires a high level of complexity. The exploitability is considered difficult. The exploit has been disclosed to the public and may be used. The pull request to fix this issue awaits acceptance."
+              },
+              "properties": {
+                "cvssv3_baseScore": 3.6,
+                "cvssv3_vector": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:L",
+                "cvssv40_baseScore": 1.1,
+                "cvssv40_vector": "CVSS:4.0/AV:L/AC:H/AT:N/PR:L/UI:N/VC:N/VI:L/VA:L/SC:N/SI:N/SA:N/E:P",
+                "precision": "very-high",
+                "security-severity": "3.6",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "LOW"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-44431",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "urllib3: urllib3: Information disclosure via cross-origin redirects forwarding sensitive headers"
+              },
+              "fullDescription": {
+                "text": "urllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-44431",
+              "help": {
+                "text": "Vulnerability CVE-2026-44431\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0.",
+                "markdown": "**Vulnerability CVE-2026-44431**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|urllib3|2.7.0|[CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)|\n\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 5.3,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+                "cvssv40_baseScore": 8.2,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:H/AT:P/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "5.3",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-44432",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "urllib3: urllib3: Denial of Service due to excessive HTTP response decompression"
+              },
+              "fullDescription": {
+                "text": "urllib3 is an HTTP client library for Python. From 2.6.0 to before 2.7.0, urllib3 could decompress the whole response instead of the requested portion (1) during the second HTTPResponse.read(amt=N) call when the response was decompressed using the official Brotli library or (2) when HTTPResponse.drain_conn() was called after the response had been read and decompressed partially (compression algorithm did not matter here). These issues could cause urllib3 to fully decode a small amount of highly compressed data in a single operation. This could result in excessive resource consumption (high CPU usage and massive memory allocation for the decompressed data) on the client side. This vulnerability is fixed in 2.7.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-44432",
+              "help": {
+                "text": "Vulnerability CVE-2026-44432\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.7.0\nLink: [CVE-2026-44432](https://avd.aquasec.com/nvd/cve-2026-44432)\nurllib3 is an HTTP client library for Python. From 2.6.0 to before 2.7.0, urllib3 could decompress the whole response instead of the requested portion (1) during the second HTTPResponse.read(amt=N) call when the response was decompressed using the official Brotli library or (2) when HTTPResponse.drain_conn() was called after the response had been read and decompressed partially (compression algorithm did not matter here). These issues could cause urllib3 to fully decode a small amount of highly compressed data in a single operation. This could result in excessive resource consumption (high CPU usage and massive memory allocation for the decompressed data) on the client side. This vulnerability is fixed in 2.7.0.",
+                "markdown": "**Vulnerability CVE-2026-44432**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|urllib3|2.7.0|[CVE-2026-44432](https://avd.aquasec.com/nvd/cve-2026-44432)|\n\nurllib3 is an HTTP client library for Python. From 2.6.0 to before 2.7.0, urllib3 could decompress the whole response instead of the requested portion (1) during the second HTTPResponse.read(amt=N) call when the response was decompressed using the official Brotli library or (2) when HTTPResponse.drain_conn() was called after the response had been read and decompressed partially (compression algorithm did not matter here). These issues could cause urllib3 to fully decode a small amount of highly compressed data in a single operation. This could result in excessive resource consumption (high CPU usage and massive memory allocation for the decompressed data) on the client side. This vulnerability is fixed in 2.7.0."
+              },
+              "properties": {
+                "cvssv3_baseScore": 7.5,
+                "cvssv3_vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+                "cvssv40_baseScore": 8.9,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:H",
+                "precision": "very-high",
+                "security-severity": "7.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-97687",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "urllib3: urllib3: Traffic interception via HTTPS proxy TLS configuration override"
+              },
+              "fullDescription": {
+                "text": "urllib3 is an HTTP client library for Python. From 1.26.0 until 2.8.0, the proxy_ssl_context, proxy_assert_hostname, proxy_assert_fingerprint, ssl_context, cert_reqs, verify_mode, use_forwarding_for_https=True, and CERT_NONE configuration paths fail to remain separated because target-server TLS settings are incorrectly applied to the HTTPS proxy connection. The trigger is that an application uses an HTTPS proxy and configures target-server TLS settings that must remain separate from the proxy TLS handshake, including HTTPS forwarding with target-specific identity or credentials. Applying cert_reqs=CERT_NONE can overwrite proxy_ssl_context.verify_mode in place, and the mutation persists so later connections reusing the same context may connect to the HTTPS proxy without certificate verification. The attack mechanism is that an attacker intercepts and impersonates the HTTPS proxy after the effective proxy policy accepts the attacker's certificate. The impact is that the attacker can observe or modify forwarded traffic or receive a target TLS client certificate, while CONNECT tunneling still preserves the separate end-to-end target TLS connection. This issue is fixed in version 2.8.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-97687",
+              "help": {
+                "text": "Vulnerability CVE-2026-97687\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.8.0\nLink: [CVE-2026-97687](https://avd.aquasec.com/nvd/cve-2026-97687)\nurllib3 is an HTTP client library for Python. From 1.26.0 until 2.8.0, the proxy_ssl_context, proxy_assert_hostname, proxy_assert_fingerprint, ssl_context, cert_reqs, verify_mode, use_forwarding_for_https=True, and CERT_NONE configuration paths fail to remain separated because target-server TLS settings are incorrectly applied to the HTTPS proxy connection. The trigger is that an application uses an HTTPS proxy and configures target-server TLS settings that must remain separate from the proxy TLS handshake, including HTTPS forwarding with target-specific identity or credentials. Applying cert_reqs=CERT_NONE can overwrite proxy_ssl_context.verify_mode in place, and the mutation persists so later connections reusing the same context may connect to the HTTPS proxy without certificate verification. The attack mechanism is that an attacker intercepts and impersonates the HTTPS proxy after the effective proxy policy accepts the attacker's certificate. The impact is that the attacker can observe or modify forwarded traffic or receive a target TLS client certificate, while CONNECT tunneling still preserves the separate end-to-end target TLS connection. This issue is fixed in version 2.8.0.",
+                "markdown": "**Vulnerability CVE-2026-97687**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|urllib3|2.8.0|[CVE-2026-97687](https://avd.aquasec.com/nvd/cve-2026-97687)|\n\nurllib3 is an HTTP client library for Python. From 1.26.0 until 2.8.0, the proxy_ssl_context, proxy_assert_hostname, proxy_assert_fingerprint, ssl_context, cert_reqs, verify_mode, use_forwarding_for_https=True, and CERT_NONE configuration paths fail to remain separated because target-server TLS settings are incorrectly applied to the HTTPS proxy connection. The trigger is that an application uses an HTTPS proxy and configures target-server TLS settings that must remain separate from the proxy TLS handshake, including HTTPS forwarding with target-specific identity or credentials. Applying cert_reqs=CERT_NONE can overwrite proxy_ssl_context.verify_mode in place, and the mutation persists so later connections reusing the same context may connect to the HTTPS proxy without certificate verification. The attack mechanism is that an attacker intercepts and impersonates the HTTPS proxy after the effective proxy policy accepts the attacker's certificate. The impact is that the attacker can observe or modify forwarded traffic or receive a target TLS client certificate, while CONNECT tunneling still preserves the separate end-to-end target TLS connection. This issue is fixed in version 2.8.0."
+              },
+              "properties": {
+                "cvssv40_baseScore": 7.6,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:P/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-97689",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "urllib3: urllib3: Denial of Service via unbounded memory allocation in chunk parser"
+              },
+              "fullDescription": {
+                "text": "urllib3 is an HTTP client library for Python. From 1.10.3 until 2.8.0, the HTTPResponse.read_chunked and HTTPResponse.stream methods can allocate unbounded memory because the streaming chunk parser buffers the chunk-size field until newline or EOF without a length bound. The trigger is that a malicious server returns Transfer-Encoding: chunked followed by a very long run of bytes without a newline. The attack mechanism is that a malicious HTTP server sends a very long unterminated chunk-size line. The impact is that unbounded memory allocation can exhaust the client process. This issue is fixed in version 2.8.0."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-97689",
+              "help": {
+                "text": "Vulnerability CVE-2026-97689\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.8.0\nLink: [CVE-2026-97689](https://avd.aquasec.com/nvd/cve-2026-97689)\nurllib3 is an HTTP client library for Python. From 1.10.3 until 2.8.0, the HTTPResponse.read_chunked and HTTPResponse.stream methods can allocate unbounded memory because the streaming chunk parser buffers the chunk-size field until newline or EOF without a length bound. The trigger is that a malicious server returns Transfer-Encoding: chunked followed by a very long run of bytes without a newline. The attack mechanism is that a malicious HTTP server sends a very long unterminated chunk-size line. The impact is that unbounded memory allocation can exhaust the client process. This issue is fixed in version 2.8.0.",
+                "markdown": "**Vulnerability CVE-2026-97689**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|HIGH|urllib3|2.8.0|[CVE-2026-97689](https://avd.aquasec.com/nvd/cve-2026-97689)|\n\nurllib3 is an HTTP client library for Python. From 1.10.3 until 2.8.0, the HTTPResponse.read_chunked and HTTPResponse.stream methods can allocate unbounded memory because the streaming chunk parser buffers the chunk-size field until newline or EOF without a length bound. The trigger is that a malicious server returns Transfer-Encoding: chunked followed by a very long run of bytes without a newline. The attack mechanism is that a malicious HTTP server sends a very long unterminated chunk-size line. The impact is that unbounded memory allocation can exhaust the client process. This issue is fixed in version 2.8.0."
+              },
+              "properties": {
+                "cvssv40_baseScore": 8.9,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:N/VI:N/VA:H/SC:N/SI:N/SA:H",
+                "precision": "very-high",
+                "security-severity": "8.0",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "HIGH"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-97688",
+              "name": "LanguageSpecificPackageVulnerability",
+              "shortDescription": {
+                "text": "urllib3: urllib3: Denial of Service via infinite loop during chunked Deflate decoding"
+              },
+              "fullDescription": {
+                "text": "urllib3 is an HTTP client library for Python. From 2.6.2 until 2.8.0, HTTPResponse.stream and HTTPResponse.read_chunked can enter an infinite loop because the Deflate decoder retains trailing bytes as unconsumed input after reaching end-of-stream and repeatedly decodes them without progress. The issue occurs when an untrusted server sends a chunked Deflate response whose decoded body exceeds a positive finite chunk size and whose encoded body has trailing bytes, specifically a response with Transfer-Encoding: chunked and Content-Encoding: deflate, content decoding enabled, and the positive finite amt=N streaming chunk size. The attack mechanism is that a malicious server returns a compressed chunked response with trailing bytes after the Deflate stream. The impact is excessive CPU usage and a request that does not complete, and network read timeouts do not interrupt the loop because no further socket read occurs. This issue is fixed in version 2.8.0."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "helpUri": "https://avd.aquasec.com/nvd/cve-2026-97688",
+              "help": {
+                "text": "Vulnerability CVE-2026-97688\nSeverity: MEDIUM\nPackage: urllib3\nFixed Version: 2.8.0\nLink: [CVE-2026-97688](https://avd.aquasec.com/nvd/cve-2026-97688)\nurllib3 is an HTTP client library for Python. From 2.6.2 until 2.8.0, HTTPResponse.stream and HTTPResponse.read_chunked can enter an infinite loop because the Deflate decoder retains trailing bytes as unconsumed input after reaching end-of-stream and repeatedly decodes them without progress. The issue occurs when an untrusted server sends a chunked Deflate response whose decoded body exceeds a positive finite chunk size and whose encoded body has trailing bytes, specifically a response with Transfer-Encoding: chunked and Content-Encoding: deflate, content decoding enabled, and the positive finite amt=N streaming chunk size. The attack mechanism is that a malicious server returns a compressed chunked response with trailing bytes after the Deflate stream. The impact is excessive CPU usage and a request that does not complete, and network read timeouts do not interrupt the loop because no further socket read occurs. This issue is fixed in version 2.8.0.",
+                "markdown": "**Vulnerability CVE-2026-97688**\n| Severity | Package | Fixed Version | Link |\n| --- | --- | --- | --- |\n|MEDIUM|urllib3|2.8.0|[CVE-2026-97688](https://avd.aquasec.com/nvd/cve-2026-97688)|\n\nurllib3 is an HTTP client library for Python. From 2.6.2 until 2.8.0, HTTPResponse.stream and HTTPResponse.read_chunked can enter an infinite loop because the Deflate decoder retains trailing bytes as unconsumed input after reaching end-of-stream and repeatedly decodes them without progress. The issue occurs when an untrusted server sends a chunked Deflate response whose decoded body exceeds a positive finite chunk size and whose encoded body has trailing bytes, specifically a response with Transfer-Encoding: chunked and Content-Encoding: deflate, content decoding enabled, and the positive finite amt=N streaming chunk size. The attack mechanism is that a malicious server returns a compressed chunked response with trailing bytes after the Deflate stream. The impact is excessive CPU usage and a request that does not complete, and network read timeouts do not interrupt the loop because no further socket read occurs. This issue is fixed in version 2.8.0."
+              },
+              "properties": {
+                "cvssv40_baseScore": 6.9,
+                "cvssv40_vector": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N",
+                "precision": "very-high",
+                "security-severity": "5.5",
+                "tags": [
+                  "vulnerability",
+                  "security",
+                  "MEDIUM"
+                ]
+              }
+            }
+          ],
+          "version": "0.75.0"
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CVE-2026-25990",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-25990\nSeverity: HIGH\nFixed Version: 12.1.1\nLink: [CVE-2026-25990](https://avd.aquasec.com/nvd/cve-2026-25990)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-40192",
+          "ruleIndex": 1,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-40192\nSeverity: HIGH\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-42311",
+          "ruleIndex": 2,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42311\nSeverity: HIGH\nFixed Version: 12.2.0\nLink: [CVE-2026-42311](https://avd.aquasec.com/nvd/cve-2026-42311)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-54058",
+          "ruleIndex": 3,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54058\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54058](https://avd.aquasec.com/nvd/cve-2026-54058)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-54059",
+          "ruleIndex": 4,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54059\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-54060",
+          "ruleIndex": 5,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54060\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54060](https://avd.aquasec.com/nvd/cve-2026-54060)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-55379",
+          "ruleIndex": 6,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-55379\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-55379](https://avd.aquasec.com/nvd/cve-2026-55379)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-55380",
+          "ruleIndex": 7,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-55380\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-55380](https://avd.aquasec.com/nvd/cve-2026-55380)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-59197",
+          "ruleIndex": 8,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59197\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59197](https://avd.aquasec.com/nvd/cve-2026-59197)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-59199",
+          "ruleIndex": 9,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59199\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59199](https://avd.aquasec.com/nvd/cve-2026-59199)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-59200",
+          "ruleIndex": 10,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59200\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59200](https://avd.aquasec.com/nvd/cve-2026-59200)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-59204",
+          "ruleIndex": 11,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59204\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59204](https://avd.aquasec.com/nvd/cve-2026-59204)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-59205",
+          "ruleIndex": 12,
+          "level": "error",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59205\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59205](https://avd.aquasec.com/nvd/cve-2026-59205)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-42308",
+          "ruleIndex": 13,
+          "level": "warning",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42308\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42308](https://avd.aquasec.com/nvd/cve-2026-42308)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-42309",
+          "ruleIndex": 14,
+          "level": "warning",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42309\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42309](https://avd.aquasec.com/nvd/cve-2026-42309)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-42310",
+          "ruleIndex": 15,
+          "level": "warning",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-42310\nSeverity: MEDIUM\nFixed Version: 12.2.0\nLink: [CVE-2026-42310](https://avd.aquasec.com/nvd/cve-2026-42310)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-55798",
+          "ruleIndex": 16,
+          "level": "warning",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-55798\nSeverity: MEDIUM\nFixed Version: 12.3.0\nLink: [CVE-2026-55798](https://avd.aquasec.com/nvd/cve-2026-55798)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-59198",
+          "ruleIndex": 17,
+          "level": "warning",
+          "message": {
+            "text": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59198\nSeverity: MEDIUM\nFixed Version: 12.3.0\nLink: [CVE-2026-59198](https://avd.aquasec.com/nvd/cve-2026-59198)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 19,
+                  "startColumn": 1,
+                  "endLine": 19,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pillow@11.3.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-25087",
+          "ruleIndex": 18,
+          "level": "error",
+          "message": {
+            "text": "Package: pyarrow\nInstalled Version: 21.0.0\nVulnerability CVE-2026-25087\nSeverity: HIGH\nFixed Version: 23.0.1\nLink: [CVE-2026-25087](https://avd.aquasec.com/nvd/cve-2026-25087)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 1,
+                  "endLine": 21,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: pyarrow@21.0.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-25645",
+          "ruleIndex": 19,
+          "level": "warning",
+          "message": {
+            "text": "Package: requests\nInstalled Version: 2.32.5\nVulnerability CVE-2026-25645\nSeverity: MEDIUM\nFixed Version: 2.33.0\nLink: [CVE-2026-25645](https://avd.aquasec.com/nvd/cve-2026-25645)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 26,
+                  "startColumn": 1,
+                  "endLine": 26,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: requests@2.32.5"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-33682",
+          "ruleIndex": 20,
+          "level": "warning",
+          "message": {
+            "text": "Package: streamlit\nInstalled Version: 1.50.0\nVulnerability CVE-2026-33682\nSeverity: MEDIUM\nFixed Version: 1.54.0\nLink: [CVE-2026-33682](https://avd.aquasec.com/nvd/cve-2026-33682)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 1,
+                  "endLine": 30,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: streamlit@1.50.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-10804",
+          "ruleIndex": 21,
+          "level": "note",
+          "message": {
+            "text": "Package: streamlit\nInstalled Version: 1.50.0\nVulnerability CVE-2026-10804\nSeverity: LOW\nFixed Version: 1.53.1\nLink: [CVE-2026-10804](https://avd.aquasec.com/nvd/cve-2026-10804)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 1,
+                  "endLine": 30,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: streamlit@1.50.0"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-44431",
+          "ruleIndex": 22,
+          "level": "error",
+          "message": {
+            "text": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-44431\nSeverity: HIGH\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 1,
+                  "endLine": 36,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: urllib3@2.6.3"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-44432",
+          "ruleIndex": 23,
+          "level": "error",
+          "message": {
+            "text": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-44432\nSeverity: HIGH\nFixed Version: 2.7.0\nLink: [CVE-2026-44432](https://avd.aquasec.com/nvd/cve-2026-44432)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 1,
+                  "endLine": 36,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: urllib3@2.6.3"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-97687",
+          "ruleIndex": 24,
+          "level": "error",
+          "message": {
+            "text": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-97687\nSeverity: HIGH\nFixed Version: 2.8.0\nLink: [CVE-2026-97687](https://avd.aquasec.com/nvd/cve-2026-97687)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 1,
+                  "endLine": 36,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: urllib3@2.6.3"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-97689",
+          "ruleIndex": 25,
+          "level": "error",
+          "message": {
+            "text": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-97689\nSeverity: HIGH\nFixed Version: 2.8.0\nLink: [CVE-2026-97689](https://avd.aquasec.com/nvd/cve-2026-97689)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 1,
+                  "endLine": 36,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: urllib3@2.6.3"
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-97688",
+          "ruleIndex": 26,
+          "level": "warning",
+          "message": {
+            "text": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-97688\nSeverity: MEDIUM\nFixed Version: 2.8.0\nLink: [CVE-2026-97688](https://avd.aquasec.com/nvd/cve-2026-97688)"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "requirements.txt",
+                  "uriBaseId": "ROOTPATH"
+                },
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 1,
+                  "endLine": 36,
+                  "endColumn": 1
+                }
+              },
+              "message": {
+                "text": "requirements.txt: urllib3@2.6.3"
+              }
+            }
+          ]
+        }
+      ],
+      "columnKind": "utf16CodeUnits",
+      "originalUriBaseIds": {
+        "ROOTPATH": {
+          "uri": "file:///repo/"
+        }
+      }
+    }
+  ]
+}

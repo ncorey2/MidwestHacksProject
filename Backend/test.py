@@ -78,21 +78,35 @@ def ask_ai(prompt):
     )
 
     return response.choices[0].message.content
-def get_severity(result, rule):
-    props = {**(rule.get("properties") or {}),
-             **(result.get("properties") or {})}
+def get_severity(result, rule, scanner=""):
+    if "gitleaks" in scanner.lower():
+        return "HIGH"
+
+    props = {**(rule.get("properties") or {}), **(result.get("properties") or {})}
+
+    # 1. Trivy puts the severity name in the rule tags
+    for tag in props.get("tags") or []:
+        if str(tag).upper() in SEV_RANK:
+            return str(tag).upper()
+
+    # 2. Numeric score (CVSS-style)
     try:
         score = float(props.get("security-severity"))
-        if score >= 9:
-            return "CRITICAL"
-        if score >= 7:
-            return "HIGH"
-        if score >= 4:
-            return "MEDIUM"
+        if score >= 9: return "CRITICAL"
+        if score >= 7: return "HIGH"
+        if score >= 4: return "MEDIUM"
         return "LOW"
     except (TypeError, ValueError):
-        return LEVEL_MAP.get(result.get("level", "warning"), "MEDIUM")
+        pass
 
+    # 3. Trivy's message text often contains "Severity: HIGH"
+    text = (result.get("message", {}).get("text") or "").upper()
+    for name in SEV_RANK:
+        if f"SEVERITY: {name}" in text:
+            return name
+
+    # 4. Last resort: the coarse SARIF level
+    return LEVEL_MAP.get(result.get("level", "warning"), "MEDIUM")
 
 def load_bandit_findings():
     findings = []
@@ -286,7 +300,7 @@ def load_findings():
 
                     findings.append({
                         "title": title,
-                        "severity": severity,
+                        "severity": get_severity(r, rule, scanner),
                         "file": file,
                         "line": line,
                         "scanner": scanner,
