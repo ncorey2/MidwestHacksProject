@@ -1,6 +1,17 @@
 [
   {
     "id": "finding-001",
+    "title": "Flask Debug Mode Enabled",
+    "severity": "HIGH",
+    "file": "./server.py",
+    "line": 24,
+    "scanner": "Bandit",
+    "evidence": "23 if __name__ == \"__main__\":\n24     app.run(host=\"127.0.0.1\", port=5000, debug=True)\n",
+    "reasoning": "The code at line 24 in ./server.py enables Flask debug mode by setting `debug=True` in `app.run()`, which exposes the Werkzeug debugger and allows remote code execution if the application is accessible, posing a critical security risk.",
+    "occurrences": 1
+  },
+  {
+    "id": "finding-002",
     "title": "GitHub Actions uses mutable tag reference",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
@@ -11,7 +22,7 @@
     "occurrences": 6
   },
   {
-    "id": "finding-002",
+    "id": "finding-003",
     "title": "GitHub Actions uses mutable tag reference",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
@@ -22,7 +33,7 @@
     "occurrences": 6
   },
   {
-    "id": "finding-003",
+    "id": "finding-004",
     "title": "GitHub Actions uses mutable tag reference",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
@@ -33,7 +44,7 @@
     "occurrences": 6
   },
   {
-    "id": "finding-004",
+    "id": "finding-005",
     "title": "GitHub Actions uses mutable tag reference",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
@@ -44,7 +55,7 @@
     "occurrences": 6
   },
   {
-    "id": "finding-005",
+    "id": "finding-006",
     "title": "GitHub Actions uses mutable tag reference",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
@@ -55,7 +66,7 @@
     "occurrences": 6
   },
   {
-    "id": "finding-006",
+    "id": "finding-007",
     "title": "GitHub Actions uses mutable tag reference",
     "severity": "MEDIUM",
     "file": ".github/workflows/workflow.yml",
@@ -66,29 +77,29 @@
     "occurrences": 6
   },
   {
-    "id": "finding-007",
+    "id": "finding-008",
     "title": "Pillow Out-of-Bounds Write Vulnerability",
     "severity": "ERROR",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-25990\nSeverity: HIGH\nFixed Version: 12.1.1\nLink: [CVE-2026-25990](https://avd.aquasec.com/nvd/cve-2026-25990)\nsecurity-severity: 8.0\npillow: Pillow: Out-of-bounds Write via Specially Crafted PSD Image\nPillow is a Python imaging library. From 10.3.0 to before 12.1.1, an out-of-bounds write may be triggered when loading a specially crafted PSD image. This vulnerability is fixed in 12.1.1.\nVulnerability CVE-2026-25990\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.1.1\nLink: [CVE-2026-25990](https://avd.aquasec.com/nvd/cve-2026-25990)\nPillow is a Python imaging library. From 10.3.0 to before 12.1.1, an out-of-bounds write may be triggered when loading a specially crafted PSD image. This vulnerability is fixed in 12.1.1.",
-    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-25990, a high-severity out-of-bounds write triggered by specially crafted PSD images, which can lead to memory corruption and potential code execution if untrusted image files are processed.",
+    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-25990, a high-severity out-of-bounds write triggered by specially crafted PSD images, which can lead to memory corruption and potential code execution if untrusted image files are processed.",
     "occurrences": 1
   },
   {
-    "id": "finding-008",
+    "id": "finding-009",
     "title": "Pillow FITS Decompression Bomb DoS",
     "severity": "ERROR",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-40192\nSeverity: HIGH\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)\nsecurity-severity: 7.5\nPillow: Pillow: Denial of Service via decompression bomb in FITS image processing\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround.\nVulnerability CVE-2026-40192\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.2.0\nLink: [CVE-2026-40192](https://avd.aquasec.com/nvd/cve-2026-40192)\nPillow is a Python imaging library. Versions 10.3.0 through 12.1.1 did not limit the amount of GZIP-compressed data read when decoding a FITS image, making them vulnerable to decompression bomb attacks. A specially crafted FITS file could cause unbounded memory consumption, leading to denial of service (OOM crash or severe performance degradation). If users are unable to immediately upgrade, they should only open specific image formats, excluding FITS, as a workaround.",
-    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-40192, a HIGH severity denial-of-service flaw where unbounded GZIP decompression of FITS images can cause out-of-memory crashes, requiring an upgrade to version 12.2.0.",
+    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-40192, a HIGH severity denial-of-service flaw where unbounded GZIP decompression of FITS images can cause OOM crashes, requiring an upgrade to version 12.2.0.",
     "occurrences": 1
   },
   {
-    "id": "finding-009",
+    "id": "finding-010",
     "title": "Pillow PSD File Memory Corruption",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -99,7 +110,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-010",
+    "id": "finding-011",
     "title": "Pillow McIdas Memory Disclosure Vulnerability",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -110,18 +121,18 @@
     "occurrences": 1
   },
   {
-    "id": "finding-011",
+    "id": "finding-012",
     "title": "Pillow PCF Font DoS Vulnerability",
     "severity": "ERROR",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-54059\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)\nsecurity-severity: 7.5\npython-pillow: Pillow: Denial of Service via crafted PCF font data\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-54059\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-54059](https://avd.aquasec.com/nvd/cve-2026-54059)\nPillow is a Python imaging library. Prior to 12.3.0, PIL/PcfFontFile.py _load_bitmaps() read glyph dimensions from the PCF METRICS section and passed them directly to Image.frombytes() without calling Image._decompression_bomb_check(), allowing crafted PCF font data to cause excessive memory allocation. This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-54059, a HIGH severity denial of service flaw where crafted PCF font data triggers excessive memory allocation in _load_bitmaps() due to the absence of a decompression bomb check, which is fixed in version 12.3.0.",
+    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-54059, a HIGH severity denial-of-service flaw where crafted PCF font data triggers excessive memory allocation in PIL/PcfFontFile.py because the _load_bitmaps() function fails to perform a decompression bomb check before calling Image.frombytes().",
     "occurrences": 1
   },
   {
-    "id": "finding-012",
+    "id": "finding-013",
     "title": "Pillow Font DoS Vulnerability",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -132,7 +143,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-013",
+    "id": "finding-014",
     "title": "Pillow BDF Font DoS Vulnerability",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -143,7 +154,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-014",
+    "id": "finding-015",
     "title": "Pillow Denial of Service via GD Image",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -154,7 +165,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-015",
+    "id": "finding-016",
     "title": "Pillow Heap Out-of-Bounds Write",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -165,18 +176,18 @@
     "occurrences": 1
   },
   {
-    "id": "finding-016",
+    "id": "finding-017",
     "title": "Pillow Out-of-Bounds Write Denial of Service",
     "severity": "ERROR",
     "file": "requirements.txt",
     "line": 19,
     "scanner": "trivy",
     "evidence": "Package: pillow\nInstalled Version: 11.3.0\nVulnerability CVE-2026-59199\nSeverity: HIGH\nFixed Version: 12.3.0\nLink: [CVE-2026-59199](https://avd.aquasec.com/nvd/cve-2026-59199)\nsecurity-severity: 7.5\nPillow: Pillow: Denial of Service via out-of-bounds write in image processing\nPillow is a Python imaging library. Prior to 12.3.0, Pillow public image coordinate APIs can trigger a native heap out-of-bounds write when given coordinates near the signed 32-bit integer limits in Image.paste(), Image.crop(), or Image.alpha_composite(). This issue is fixed in version 12.3.0.\nVulnerability CVE-2026-59199\nSeverity: HIGH\nPackage: pillow\nFixed Version: 12.3.0\nLink: [CVE-2026-59199](https://avd.aquasec.com/nvd/cve-2026-59199)\nPillow is a Python imaging library. Prior to 12.3.0, Pillow public image coordinate APIs can trigger a native heap out-of-bounds write when given coordinates near the signed 32-bit integer limits in Image.paste(), Image.crop(), or Image.alpha_composite(). This issue is fixed in version 12.3.0.",
-    "reasoning": "The installed version of Pillow (11.3.0) is vulnerable to CVE-2026-59199, a HIGH severity denial of service caused by an out-of-bounds write in image processing APIs when handling coordinates near signed 32-bit integer limits, which is fixed in version 12.3.0.",
+    "reasoning": "The installed Pillow version 11.3.0 is vulnerable to CVE-2026-59199, a HIGH severity denial of service caused by an out-of-bounds write in image processing APIs when handling coordinates near signed 32-bit integer limits, which is fixed in version 12.3.0.",
     "occurrences": 1
   },
   {
-    "id": "finding-017",
+    "id": "finding-018",
     "title": "Pillow PDF Stream Denial of Service",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -187,7 +198,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-018",
+    "id": "finding-019",
     "title": "Pillow JPEG2000 Denial of Service",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -198,7 +209,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-019",
+    "id": "finding-020",
     "title": "Pillow Heap Corruption via ImageCms",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -209,7 +220,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-020",
+    "id": "finding-021",
     "title": "Pillow Integer Overflow Denial of Service",
     "severity": "WARNING",
     "file": "requirements.txt",
@@ -220,7 +231,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-021",
+    "id": "finding-022",
     "title": "Pillow Heap Buffer Overflow via Coordinates",
     "severity": "WARNING",
     "file": "requirements.txt",
@@ -231,7 +242,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-022",
+    "id": "finding-023",
     "title": "Pillow PDF Processing Denial of Service",
     "severity": "WARNING",
     "file": "requirements.txt",
@@ -242,7 +253,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-023",
+    "id": "finding-024",
     "title": "Pillow Command Injection via File Path",
     "severity": "WARNING",
     "file": "requirements.txt",
@@ -253,7 +264,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-024",
+    "id": "finding-025",
     "title": "Pillow TGA RLE Information Disclosure",
     "severity": "WARNING",
     "file": "requirements.txt",
@@ -264,7 +275,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-025",
+    "id": "finding-026",
     "title": "pyarrow Use After Free Denial of Service",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -275,7 +286,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-026",
+    "id": "finding-027",
     "title": "Predictable temp file in requests",
     "severity": "WARNING",
     "file": "requirements.txt",
@@ -286,7 +297,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-027",
+    "id": "finding-028",
     "title": "Streamlit SSRF NTLM Credential Exposure",
     "severity": "WARNING",
     "file": "requirements.txt",
@@ -297,7 +308,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-028",
+    "id": "finding-029",
     "title": "Streamlit Weak Hash Usage Vulnerability",
     "severity": "NOTE",
     "file": "requirements.txt",
@@ -308,18 +319,18 @@
     "occurrences": 1
   },
   {
-    "id": "finding-029",
+    "id": "finding-030",
     "title": "urllib3 Sensitive Header Forwarding Vulnerability",
     "severity": "ERROR",
     "file": "requirements.txt",
     "line": 36,
     "scanner": "trivy",
     "evidence": "Package: urllib3\nInstalled Version: 2.6.3\nVulnerability CVE-2026-44431\nSeverity: HIGH\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)\nsecurity-severity: 5.3\nurllib3: urllib3: Information disclosure via cross-origin redirects forwarding sensitive headers\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0.\nVulnerability CVE-2026-44431\nSeverity: HIGH\nPackage: urllib3\nFixed Version: 2.7.0\nLink: [CVE-2026-44431](https://avd.aquasec.com/nvd/cve-2026-44431)\nurllib3 is an HTTP client library for Python. From 1.23 to before 2.7.0, cross-origin redirects followed from the low-level API via ProxyManager.connection_from_url().urlopen(..., assert_same_host=False) still forward these sensitive headers. This vulnerability is fixed in 2.7.0.",
-    "reasoning": "The installed version of urllib3 (2.6.3) is vulnerable to CVE-2026-44431, which allows sensitive headers to be forwarded to different origins during cross-origin redirects when using the low-level API with assert_same_host=False, risking information disclosure.",
+    "reasoning": "The installed urllib3 version 2.6.3 is vulnerable to CVE-2026-44431, which allows sensitive headers to be forwarded during cross-origin redirects when using the low-level API with assert_same_host=False, risking information disclosure.",
     "occurrences": 1
   },
   {
-    "id": "finding-030",
+    "id": "finding-031",
     "title": "urllib3 Denial of Service Vulnerability",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -330,7 +341,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-031",
+    "id": "finding-032",
     "title": "urllib3 HTTPS Proxy TLS Interception",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -341,7 +352,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-032",
+    "id": "finding-033",
     "title": "urllib3 Unbounded Memory Allocation DoS",
     "severity": "ERROR",
     "file": "requirements.txt",
@@ -352,7 +363,7 @@
     "occurrences": 1
   },
   {
-    "id": "finding-033",
+    "id": "finding-034",
     "title": "urllib3 Denial of Service via Infinite Loop",
     "severity": "WARNING",
     "file": "requirements.txt",
